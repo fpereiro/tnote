@@ -100,3 +100,25 @@ To be polished before publishing initial version.
 New pieces will be added [here](https://github.com/fpereiro/vnote/tree/master/music).
 
 A transcription of [Bach's BVW 846](https://en.wikipedia.org/wiki/Prelude_and_Fugue_in_C_major,_BWV_846) can be found [here](https://cdn.rawgit.com/fpereiro/vnote/f2d757be6d65474654daec70ded354f0e11995c0/music/Bach%20-%20WTC%20846.json).
+
+## Notes on learning music using Vnote
+
+### Dodecaphonic solfège
+
+I love mental play (singing the notes of a melody or a harmony in my head) know and use the traditional solfège (do-re-mi-fa-sol-la-si), but it only has seven notes. The black keys have no names and singing "flat" or "sharp" breaks the stride of the solfège. This, over time, made me way less confident when playing music that uses lots of black keys, which sucks.
+
+So I assigned five sounds to the black keys.
+
+They are:
+
+- *jo* (for C sharp or D Flat)
+- *ka* (for D sharp or E flat)
+- *pe* (for F sharp or G flat)
+- *qu* (for G sharp or A flat)
+- *te* (for A sharp or B flat)
+
+The entire dodecaphonic scale, in solfège, is then:
+
+**do jo re ka mi fa pe sol qu la te zi**
+
+The sounds are nonsensical, but they are chosen to start with different letters than the traditional seven sounds. Notice also that *si* is pronounced *zi* to start with a different letter than *sol*.
