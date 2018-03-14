@@ -91,12 +91,12 @@ A note is expressed an array of three or four elements: `[pitch class, duration,
 
 Chords are expressed differently: their third element is irrelevant. The notes and octaves are expressed in the first element of the array, expressed as an array of arrays of the following form: `[note, octave]`. The notes of the array should be sorted from lowest to highest. For example, a quarter C major chord in the fourth octave, lasting for a whole note, should be written like this: `[[[1, 4], [5, 4], [8, 4]], 4]`.
 
-## Vnote code
+## Vnote player (as seen on the video)
 
 To be polished before publishing initial version.
 
 ## Available music in Vnote JSON format
 
-New pieces will be added [here] (https://github.com/fpereiro/vnote/tree/master/music).
+New pieces will be added [here](https://github.com/fpereiro/vnote/tree/master/music).
 
 A transcription of [Bach's BVW 846](https://en.wikipedia.org/wiki/Prelude_and_Fugue_in_C_major,_BWV_846) can be found [here](https://cdn.rawgit.com/fpereiro/vnote/f2d757be6d65474654daec70ded354f0e11995c0/music/Bach%20-%20WTC%20846.json).
