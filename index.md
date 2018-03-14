@@ -20,32 +20,36 @@ Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian B
 
 2. The [pitch class](https://en.wikipedia.org/wiki/Pitch_class) of a note is expressed as a number in the hexadecimal scale:
 
-- The number `1` represents `C`.
-- The number `2` represents `C#` or `Db`.
-- The number `3` represents `D`.
-- The number `4` represents `D#` or `Eb`.
-- The number `5` represents `E`.
-- The number `6` represents `F`.
-- The number `7` represents `F#` or `Gb`.
-- The number `8` represents `G`.
-- The number `9` represents `G#` or `Ab`.
-- The letter `A` (the number `10` in hexadecimal notation) represents `A`.
-- The letter `B` (the number `11` in hexadecimal notation) represents `A#` or `Bb`.
-- The letter `C` (the number `12` in hexadecimal notation) represents `B`.
+   - The number `1` represents `C`.
+   - The number `2` represents `C#` or `Db`.
+   - The number `3` represents `D`.
+   - The number `4` represents `D#` or `Eb`.
+   - The number `5` represents `E`.
+   - The number `6` represents `F`.
+   - The number `7` represents `F#` or `Gb`.
+   - The number `8` represents `G`.
+   - The number `9` represents `G#` or `Ab`.
+   - The letter `A` (the number `10` in hexadecimal notation) represents `A`.
+   - The letter `B` (the number `11` in hexadecimal notation) represents `A#` or `Bb`.
+   - The letter `C` (the number `12` in hexadecimal notation) represents `B`.
 
-The stop is represented by the number `0`.
+   The stop is represented by the number `0`.
 
 3. The octave of the note is expressed as a color:
 
-- The first octave is represented by <p color="red">red</p>.
-- The second octave is represented by <p color="orange">orange</p>.
-- The third octave is represented by <p color="yellow">yellow</p>.
-- The fourth octave is represented by <p color="green">green</p>.
-- The fifth octave is represented by <p color="blue">blue</p>.
-- The sixth octave is represented by <p color="indigo">indigo</p>.
-- The seventh octave is represented by <p color="violet">violet</p>.
+   ```html
+   <ul>
+   <li>The first octave is represented by <p color="red">red</p>.</li>
+   <li>The second octave is represented by <p color="orange">orange</p>.</li>
+   <li>The third octave is represented by <p color="yellow">yellow</p>.</li>
+   <li>The fourth octave is represented by <p color="green">green</p>.</li>
+   <li>The fifth octave is represented by <p color="blue">blue</p>.</li>
+   <li>The sixth octave is represented by <p color="indigo">indigo</p>.</li>
+   <li>The seventh octave is represented by <p color="violet">violet</p>.</li>
+   </ul>
+   ```html
 
-The octave starts at 1.
+   The octave starts at 1.
 
 4. The (value)[https://en.wikipedia.org/wiki/Note_value] (duration) of the note is expressed by its width.
 
