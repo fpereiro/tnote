@@ -98,3 +98,9 @@ Chords are expressed differently: their third element is irrelevant. The notes a
 ## Vnote code
 
 To be polished before publishing initial version.
+
+## Available music in Vnote JSON format
+
+New pieces will be added [here] (https://github.com/fpereiro/vnote/tree/master/music).
+
+[Bach's BVW 846](https://en.wikipedia.org/wiki/Prelude_and_Fugue_in_C_major,_BWV_846) can be found [here]().
