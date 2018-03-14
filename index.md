@@ -37,27 +37,27 @@ Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian B
 
 3. The octave of the note is expressed as a color:
 
-   ```html
-   <ul>
-   <li>The first octave is represented by <p color="red">red</p>.</li>
-   <li>The second octave is represented by <p color="orange">orange</p>.</li>
-   <li>The third octave is represented by <p color="yellow">yellow</p>.</li>
-   <li>The fourth octave is represented by <p color="green">green</p>.</li>
-   <li>The fifth octave is represented by <p color="blue">blue</p>.</li>
-   <li>The sixth octave is represented by <p color="indigo">indigo</p>.</li>
-   <li>The seventh octave is represented by <p color="violet">violet</p>.</li>
-   </ul>
-   ```html
+```html
+<ul>
+<li>The first octave is represented by <p color="red">red</p>.</li>
+<li>The second octave is represented by <p color="orange">orange</p>.</li>
+<li>The third octave is represented by <p color="yellow">yellow</p>.</li>
+<li>The fourth octave is represented by <p color="green">green</p>.</li>
+<li>The fifth octave is represented by <p color="blue">blue</p>.</li>
+<li>The sixth octave is represented by <p color="indigo">indigo</p>.</li>
+<li>The seventh octave is represented by <p color="violet">violet</p>.</li>
+</ul>
+```html
 
    The octave starts at 1.
 
-4. The (value)[https://en.wikipedia.org/wiki/Note_value] (duration) of the note is expressed by its width.
+4. The [value](https://en.wikipedia.org/wiki/Note_value) (duration) of the note is expressed by its width.
 
 5. Chords are expressed as a single note segment with the note numbers being written in succession, from the lowest to the highest. The octave color of the segment belongs to that of the *lower* note.
 
-## JSON format
+## Vnote JSON format
 
-A piece is a JSON of this form:
+Vnote uses JSON to store and share music. Here's a specification of the Vnote format:
 
 ```javascript
 {
