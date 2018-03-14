@@ -37,19 +37,15 @@ Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian B
 
 3. The octave of the note is expressed as a color:
 
-```html
-<ul>
-<li>The first octave is represented by <p color="red">red</p>.</li>
-<li>The second octave is represented by <p color="orange">orange</p>.</li>
-<li>The third octave is represented by <p color="yellow">yellow</p>.</li>
-<li>The fourth octave is represented by <p color="green">green</p>.</li>
-<li>The fifth octave is represented by <p color="blue">blue</p>.</li>
-<li>The sixth octave is represented by <p color="indigo">indigo</p>.</li>
-<li>The seventh octave is represented by <p color="violet">violet</p>.</li>
-</ul>
-```html
+   - The first octave is represented by the color red.
+   - The second octave is represented by the color orange.
+   - The third octave is represented by the color yellow.
+   - The fourth octave is represented by the color green.
+   - The fifth octave is represented by the color blue.
+   - The sixth octave is represented by the color indigo.
+   - The seventh octave is represented by the color violet.
 
-   The octave starts at 1.
+   The octave starts at the pitch class 1 (C). For example, [A440](https://en.wikipedia.org/wiki/A440_(pitch_standard)) belongs to octave 4.
 
 4. The [value](https://en.wikipedia.org/wiki/Note_value) (duration) of the note is expressed by its width.
 
@@ -103,4 +99,4 @@ To be polished before publishing initial version.
 
 New pieces will be added [here] (https://github.com/fpereiro/vnote/tree/master/music).
 
-[Bach's BVW 846](https://en.wikipedia.org/wiki/Prelude_and_Fugue_in_C_major,_BWV_846) can be found [here]().
+A transcription of [Bach's BVW 846](https://en.wikipedia.org/wiki/Prelude_and_Fugue_in_C_major,_BWV_846) can be found [here](https://cdn.rawgit.com/fpereiro/vnote/f2d757be6d65474654daec70ded354f0e11995c0/music/Bach%20-%20WTC%20846.json).
