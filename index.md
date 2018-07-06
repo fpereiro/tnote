@@ -16,7 +16,7 @@ Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian B
 
 ## Notational principles
 
-1. Notes are organized in lines. A line is a continuous sequence of notes belonging to a certain instrument. There can be more than one line per instrument simultaneously.
+1. Notes are organized in lines. A line is a continuous sequence of notes belonging to a certain instrument. There can be more than one line per instrument simultaneously. Lines could also be called *voices*.
 
 2. The [pitch class](https://en.wikipedia.org/wiki/Pitch_class) of a note is expressed as a number in the hexadecimal scale:
 
@@ -114,11 +114,11 @@ They are:
 - *jo* (for C sharp or D Flat)
 - *ka* (for D sharp or E flat)
 - *pe* (for F sharp or G flat)
-- *qu* (for G sharp or A flat)
+- *bu* (for G sharp or A flat)
 - *te* (for A sharp or B flat)
 
 The entire dodecaphonic scale, in solfège, is then:
 
-**do jo re ka mi fa pe sol qu la te zi**
+**do jo re ka mi fa pe sol bu la te zi**
 
 The sounds are nonsensical, but they are chosen to start with different letters than the traditional seven sounds. Notice also that *si* is pronounced *zi* to start with a different letter than *sol*.
