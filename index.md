@@ -64,7 +64,6 @@ Vnote uses JSON to store and share music. Here's a specification of the Vnote fo
    },
    "transcription": {
       "author": "...",
-      "permalink": "...",
       // (other fields are possible)
    },
    "sections": [
@@ -72,6 +71,8 @@ Vnote uses JSON to store and share music. Here's a specification of the Vnote fo
          "name": "...",
          // (bpm must be an integer)
          "bpm": ...,
+         // (bpb represents `beats per bar` and indicates how many quarter notes fit in a bar; it must be an integer)
+         "bpb": ...,
          // (the content of `notes` is specified in the next example)
          notes: [...]
       },
