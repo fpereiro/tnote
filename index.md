@@ -12,6 +12,8 @@ Vnote is an alternative and experimental musical notation. It is based on the fo
 
 Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://cdn.rawgit.com/fpereiro/vnote/0bdae930bb51e8d679788b17f43eeb72dbe3ca82/vnote/vnote.html).
 
+Vnote uses Keith Horwood's amazing [audiosynth library](https://github.com/keithwhor/audiosynth) to generate the synthetized piano sounds.
+
 ## Demo
 
 Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian Bach's Well Tempered Clavier (book 1).
