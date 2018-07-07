@@ -8,6 +8,10 @@ Vnote is an alternative and experimental musical notation. It is based on the fo
 4. **Share music through an open format based in JSON**: Vnote stores music in an open source format based on JSON, which is easy to parse and to edit.
 5. **Stimulate the exploration of approaches to express music**: the standard musical notation is a refined, time-tested and indisputable tool for writing music. This project considers, however, that the time is ripe to explore alternatives and improvements to it. Vnote is a contribution to this latent potential.
 
+## Using Vnote
+
+Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://cdn.rawgit.com/fpereiro/vnote/9cd401bd978983d0acc716718ae5070329dd7f72/vnote/vnote.html#).
+
 ## Demo
 
 Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian Bach's Well Tempered Clavier (book 1).
