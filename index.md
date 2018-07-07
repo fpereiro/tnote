@@ -10,7 +10,7 @@ Vnote is an alternative and experimental musical notation. It is based on the fo
 
 ## Using Vnote
 
-Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://cdn.rawgit.com/fpereiro/vnote/9cd401bd978983d0acc716718ae5070329dd7f72/vnote/vnote.html#).
+Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://cdn.rawgit.com/fpereiro/vnote/9cd401bd978983d0acc716718ae5070329dd7f72/vnote/vnote.html).
 
 ## Demo
 
