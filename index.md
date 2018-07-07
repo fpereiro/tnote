@@ -10,7 +10,7 @@ Vnote is an alternative and experimental musical notation. It is based on the fo
 
 ## Using Vnote
 
-Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://cdn.rawgit.com/fpereiro/vnote/9cd401bd978983d0acc716718ae5070329dd7f72/vnote/vnote.html).
+Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://cdn.rawgit.com/fpereiro/vnote/0bdae930bb51e8d679788b17f43eeb72dbe3ca82/vnote/vnote.html).
 
 ## Demo
 
@@ -75,7 +75,7 @@ Vnote uses JSON to store and share music. Here's a specification of the Vnote fo
          "name": "...",
          // (bpm must be an integer)
          "bpm": ...,
-         // (bpb represents `beats per bar` and indicates how many quarter notes fit in a bar; it must be an integer)
+         // (bpb represents `beats per bar` and indicates how many quarter notes fit in a bar)
          "bpb": ...,
          // (the content of `notes` is specified in the next example)
          notes: [...]
