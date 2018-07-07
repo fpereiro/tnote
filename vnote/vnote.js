@@ -306,7 +306,7 @@
                         ' to get started.',
                      ]] : V.draw (play.piece, play.section),
                      ['div', {class: 'select'}, [
-                        ['br'],
+                        ['h4', ['a', {href: 'https://fpereiro.github.io/vnote/'}, 'Project home']],
                         ['select', B.ev ([
                            ['onchange', 'set', ['State', 'play', 'section'], 0],
                            ['onchange', 'setint', ['State', 'play', 'piece']],
