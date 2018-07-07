@@ -300,7 +300,11 @@
                (function () {
                   var play = State.play || {};
                   return [
-                     play.piece === undefined ? [] : V.draw (play.piece, play.section),
+                     play.piece === undefined ? ['h3', [
+                        'No music yet! ',
+                        ['a', B.ev ({href: '#'}, ['onclick', 'import', 'piece']), 'Import a piece'],
+                        ' to get started.',
+                     ]] : V.draw (play.piece, play.section),
                      ['div', {class: 'select'}, [
                         ['br'],
                         ['select', B.ev ([
