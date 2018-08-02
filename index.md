@@ -10,7 +10,7 @@ Vnote is an alternative and experimental musical notation. It is based on the fo
 
 ## Using Vnote
 
-Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://cdn.rawgit.com/fpereiro/vnote/0bdae930bb51e8d679788b17f43eeb72dbe3ca82/vnote/vnote.html).
+Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://cdn.rawgit.com/fpereiro/vnote/7fe9e7113463463b26dc2059ca502978d01eb713/vnote/vnote.html).
 
 Vnote uses Keith Horwood's amazing [audiosynth library](https://github.com/keithwhor/audiosynth) to generate the synthetized piano sounds.
 
@@ -100,9 +100,7 @@ Chords are expressed differently: their third element is irrelevant. The notes a
 
 ## Available music in Vnote JSON format
 
-New pieces will be added [here](https://github.com/fpereiro/vnote/tree/master/music).
-
-A transcription of [Bach's BVW 846](https://en.wikipedia.org/wiki/Prelude_and_Fugue_in_C_major,_BWV_846) can be found [here](https://cdn.rawgit.com/fpereiro/vnote/f2d757be6d65474654daec70ded354f0e11995c0/music/Bach%20-%20WTC%20846.json).
+Go [here](https://github.com/fpereiro/vnote/tree/master/music) to see a list of available pieces.
 
 ## Notes on learning music using Vnote
 
