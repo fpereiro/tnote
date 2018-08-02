@@ -87,20 +87,16 @@ Vnote uses JSON to store and share music. Here's a specification of the Vnote fo
 }
 ```
 
-As for the `notes`, they are organized in an array of `notelines`. A `noteline` is an array that starts with a string indicating the name of the note line, and is followed by a number of notes.
+As for the `notes`, they are organized in an array of `notelines`. A `noteline` is an array that starts with a string indicating the name of the note line (for example, `'rh'`), and is followed by a number of notes.
 
 A note is expressed an array of three or four elements: `[pitch class, duration, octave, {...}]`.
 
 - The pitch class must be an integer between 0 and 12.
 - The duration is a number or fraction (1 for a quarter note; 2 for a half note; 4 for a whole note; 1/2 for an eight note; 1/4 for a sixteenth note; etc.).
 - The octave is an integer between 1 and 7. It is not required for rest notes.
-- The options object is optional and intends to give additional information to the interpreter (both human and digital). Currently the only option interpreted by Vnote is the `lig` marking to express ligatures, placed in the first note of the ligature: `{lig: true}`.
+- The options object is optional and intends to give additional information to the interpreter (both human and digital). Currently the only option interpreted by Vnote is the `lig` marking to express ligatures: `{lig: true}`.
 
 Chords are expressed differently: their third element is irrelevant. The notes and octaves are expressed in the first element of the array, expressed as an array of arrays of the following form: `[note, octave]`. The notes of the array should be sorted from lowest to highest. For example, a quarter C major chord in the fourth octave, lasting for a whole note, should be written like this: `[[[1, 4], [5, 4], [8, 4]], 4]`.
-
-## Vnote player (as seen on the video)
-
-To be polished before publishing initial version.
 
 ## Available music in Vnote JSON format
 
