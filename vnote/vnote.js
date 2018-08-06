@@ -200,7 +200,10 @@
             }
 
             if (config.piece   !== undefined && play.piece   === undefined) return B.do ('set', ['State', 'play', 'piece'], config.piece);
-            if (config.section !== undefined && play.section === undefined) return B.do ('set', ['State', 'play', 'section'], config.section);
+            if (config.section !== undefined && play.section === undefined) {
+               if (play.piece === undefined) return B.do ('set', ['State', 'play', 'piece'], 0);
+               return B.do ('set', ['State', 'play', 'section'], config.section);
+            }
 
             // If piece from state or config is missing, use the first available piece and section and overwrite the remaining info.
             if (! B.get ('Data', play.piece)) {
@@ -210,6 +213,9 @@
                   section: 0
                });
             }
+
+            // If piece changes, update config.
+            if (x.path [2] === 'piece') V.setConfig (x.path [2], B.get ('State', 'play', x.path [2]));
 
             // If the selected section doesn\'t exist, reset to the first section. Assumption: all pieces have at least one section.
             if (! B.get ('Data', play.piece, 'sections', play.section)) {
@@ -221,10 +227,8 @@
 
             if (! section) return alert ('There is no available section! Did you add a piece with no sections?');
 
-            // If piece or section change, update config.
-            if (x.path [2] === 'piece' || x.path [2] === 'section') {
-               V.setConfig (x.path [2], B.get ('State', 'play', x.path [2]));
-            }
+            // If section changes, update config.
+            if (x.path [2] === 'section') V.setConfig (x.path [2], B.get ('State', 'play', x.path [2]));
 
             // If only piece & section are set, initialize the other keys
             if (dale.keys (play).length === 2 || x.path [2] === 'piece' || x.path [2] === 'section') {
@@ -237,6 +241,8 @@
                   lines:   dale.keys (section.notes)
                });
             }
+
+            var value = B.get ('State', 'play', x.path [2]);
 
             if (x.path [2] === 'bpm') {
                if (type (value) !== 'integer' || value < 1) B.do ('set', ['State', 'play', 'bpm'], section.bpm);
