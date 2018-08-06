@@ -71,6 +71,8 @@
 
       var playNext = function (name, line, k, repeat) {
 
+         if (B.get.apply (null, options.lines).indexOf (name) === -1) return;
+
          var note = line [k];
 
          if (note && options.start && options.start > note [3].t) return playNext (name, line, k + 1, repeat);
@@ -87,7 +89,7 @@
 
          if (offset > -15) {
 
-            if (B.get.apply (null, options.lines).indexOf (name) !== -1 && ! note [3].mute) V.playnote (note, options.bpm, offset);
+            if (! note [3].mute) V.playnote (note, options.bpm, offset);
 
             document.getElementById (name + ':' + k).className = 'playing';
             if (k > 0) document.getElementById (name + ':' + (k - 1)).className = '';
