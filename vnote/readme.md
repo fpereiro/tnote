@@ -10,8 +10,6 @@ localStorage:
    piece: INT
 }
 
-State.instrument: Synth used to play.
-
 State.playing: true/false. Starts/stops playing.
 
 State.play: {
@@ -34,3 +32,7 @@ note (after parse):
 - t is measured in beats, marks start point.
 
 ## Todo
+
+- Performance.
+- Edit note.
+- Decimal bars?

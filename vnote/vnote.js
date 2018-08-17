@@ -50,16 +50,15 @@
       return lines;
    }
 
-   V.playnote = function (note, bpm) {
+   V.playnote = function (note, bpm, volume) {
       // If silent note, ignore the note.
       if (note [0] === 0) return;
-      var map = {1: 'C', 2: 'C#', 3: 'D', 4: 'D#', 5: 'E', 6: 'F', 7: 'F#', 8: 'G', 9: 'G#', 10: 'A', 11: 'A#', 12: 'B'};
 
       // We add 0.5s to give it more sustain and a minimum length.
-      if (type (note [0]) === 'integer') return B.get ('State', 'instrument').play (map [note [0]], note [2], 60 / bpm * note [3].dur + 0.5);
+      if (type (note [0]) === 'integer') return Synth.play ({note: note [0], octave: note [2], duration: 60 / bpm * note [3].dur + 0.5}, Synth.instruments.piano, volume ? {volume: volume} : {});
 
       dale.do (note [0], function (n) {
-         B.get ('State', 'instrument').play (map [n [0]], n [1], 60 / bpm * note [3].dur + 0.5);
+         Synth.play ({note: n [0], octave: n [1], duration: 60 / bpm * note [3].dur + 0.5}, Synth.instruments.piano, volume ? {volume: volume} : {});
       });
    }
 
@@ -70,8 +69,6 @@
       B.do ('set', ['State', 'playing'], true);
 
       var playNext = function (name, line, k, repeat) {
-
-         if (B.get.apply (null, options.lines).indexOf (name) === -1) return;
 
          var note = line [k];
 
@@ -88,11 +85,14 @@
          offset -= repeat * ((options.stop || line [line.length - 1].t + line [line.length - 1].dur) - (options.start || 0)) * (1000 * 60 / options.bpm);
 
          if (offset > -15) {
+            var activeLine = B.get.apply (null, options.lines).indexOf (name) !== -1;
 
-            if (! note [3].mute) V.playnote (note, options.bpm, offset);
+            if (activeLine || options.backgroundVolume) {
+               if (! note [3].mute) V.playnote (note, options.bpm, activeLine ? undefined : options.backgroundVolume);
 
-            document.getElementById (name + ':' + k).className = 'playing';
-            if (k > 0) document.getElementById (name + ':' + (k - 1)).className = '';
+               document.getElementById (name + ':' + k).className = 'playing';
+               if (k > 0) document.getElementById (name + ':' + (k - 1)).className = '';
+            }
 
             window.setTimeout (function () {
                playNext (name, line, k + 1, repeat);
@@ -173,6 +173,9 @@
          ['setint', '*', function (x, value) {
             B.do ('set', x.path, parseInt (value));
          }],
+         ['setfloat', '*', function (x, value) {
+            B.do ('set', x.path, parseFloat (value));
+         }],
          ['click', 'note', function (x, note, name) {
             if (! note) return;
             if (B.get (['State', 'delmode'])) B.do ('delete', 'note', note, name);
@@ -186,7 +189,8 @@
                bpm:   B.get ('State', 'play', 'bpm'),
                start: (B.get ('State', 'play', 'start') - 1) * section.bpb,
                stop:  B.get ('State', 'play', 'stop')        * section.bpb,
-               lines: ['State', 'play', 'lines']
+               lines: ['State', 'play', 'lines'],
+               backgroundVolume: B.get ('State', 'play', 'backgroundVolume') || 0,
             });
          }],
          ['change', ['State', 'play'], function (x) {
@@ -367,6 +371,10 @@
                      'box-sizing': 'border-box',
                      'border-left': 'solid 2px white'
                   }],
+                  ['input.play', {
+                     width: 60,
+                     float: 'left',
+                  }],
                   ['body', {
                      'background-size': (config.width / 2) + 'px ' + (config.width / 2) + 'px',
                      'background-image': 'linear-gradient(to right, #888888 1px, transparent 1px)',
@@ -397,15 +405,15 @@
             B.view (['State'], function (x, State) {
                var play = State.play || {};
                return ['div', {class: 'select'}, [
-                  ['h4', ['a', {href: 'https://fpereiro.github.io/vnote/'}, 'Project home']],
                   B.view (['Data'], function (x, Data) {return [
+                     ['a', {href: 'https://fpereiro.github.io/vnote/'}, 'Project home'],
+                     ['br'], ['br'],
                      ['select', B.ev ({style: 'width: 200px'}, [
                         ['onchange', 'setint', ['State', 'play', 'piece']],
                         ['onchange', 'set', ['State', 'playing'], false]
                      ]), dale.do (Data, function (piece, k) {
                         return ['option', {selected: play.piece === k, value: k}, piece.piece.title + ' (' + piece.piece.author + ')'];
                      })],
-                     ['br'],
                      ['select', B.ev ([
                         ['onchange', 'setint', ['State', 'play', 'section']],
                         ['onchange', 'set', ['State', 'playing'], false]
@@ -416,14 +424,13 @@
                   ['button', B.ev (['onclick', 'set', ['State', 'playing'], ! State.playing]), State.playing ? 'stop' : 'play'],
                   ['br'],
                   ['br'],
-                  ['li', {class: 'label'}, 'Start'],
-                  ['input', B.ev ({readonly: (State.playing || play.piece === undefined) ? 1 : undefined, placeholder: 'start', value: play.start}, ['onchange', 'setint', ['State', 'play', 'start']])],
+                  ['li', {style: 'color: black'}, 'start/stop/bpm/backvolume'],
                   ['br'],
-                  ['li', {class: 'label'}, 'Stop'],
-                  ['input', B.ev ({readonly: (State.playing || play.piece === undefined) ? 1 : undefined, placeholder: 'stop',  value: play.stop},  ['onchange', 'setint', ['State', 'play', 'stop']])],
+                  ['input', B.ev ({class: 'play', readonly: (State.playing || play.piece === undefined) ? 1 : undefined, placeholder: 'start', value: play.start}, ['onchange', 'setint', ['State', 'play', 'start']])],
+                  ['input', B.ev ({class: 'play', readonly: (State.playing || play.piece === undefined) ? 1 : undefined, placeholder: 'stop',  value: play.stop},  ['onchange', 'setint', ['State', 'play', 'stop']])],
+                  ['input', B.ev ({class: 'play', readonly: (State.playing || play.piece === undefined) ? 1 : undefined, placeholder: 'bpm',   value: play.bpm},   ['onchange', 'setint', ['State', 'play', 'bpm']])],
+                  ['input', B.ev ({class: 'play', readonly: (State.playing || play.piece === undefined) ? 1 : undefined, placeholder: 'backgroundVolume',   value: play.backgroundVolume},   ['onchange', 'setfloat', ['State', 'play', 'backgroundVolume']])],
                   ['br'],
-                  ['li', {class: 'label'}, 'BPM'],
-                  ['input', B.ev ({readonly: (State.playing || play.piece === undefined) ? 1 : undefined, placeholder: 'bpm',   value: play.bpm},   ['onchange', 'setint', ['State', 'play', 'bpm']])],
                   ['br'],
                   B.view (['Data'], function (x, Data) {
                      if (! play.lines) return;
@@ -434,12 +441,11 @@
                   }),
                   ['div', [
                      ['br'],
-                     ['button', B.ev (['onclick', 'import', 'piece']), 'Import piece from a link'],
+                     ['button', B.ev ({style: 'float: left; margin-right: 5px'}, ['onclick', 'import', 'piece']), 'Import from link'],
+                     ['a', {style: 'float: left', href: 'https://github.com/fpereiro/vnote/tree/master/music', target: '_blank'}, 'Get links'],
                      ['br'],
-                     ['a', {style: 'font-size: 80%', href: 'https://github.com/fpereiro/vnote/tree/master/music', target: '_blank'}, 'List of pieces'],
                      ['br'],
-                     ['p', 'Or from a file:'],
-                     ['input', B.ev ({id: 'piecefile', type: 'file'}, ['onchange', 'import', 'piecefile'])],
+                     ['input', B.ev ({value: 'Import from file', id: 'piecefile', type: 'file'}, ['onchange', 'import', 'piecefile'])],
                      ['br'],
                      ['br'],
                      ['button', B.ev (['onclick', 'delete', 'piece']), 'Delete entire piece'],
@@ -500,10 +506,6 @@
    V.loadData ();
 
    // *** CONFIG ***
-
-   B.do ('set', ['State', 'instrument'], Synth.createInstrument ('piano'));
-   Synth.setSampleRate (20000);
-   Synth.setVolume (0.40);
 
    var config = teishi.p (localStorage.vnote_config) || {};
 
