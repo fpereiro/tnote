@@ -1,4 +1,4 @@
-> "Y es música, música, siempre, sí." -- Roberto Napolitano
+> "Y es música, música, siempre, sí." -- Norberto Napolitano
 
 ## Internal structure
 
