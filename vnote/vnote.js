@@ -456,33 +456,6 @@
                      B.view (['Data'], function () {
                         return ['a', {style: 'font-size: 0.9em', href: V.exportPiece (play.piece), download: B.get ('Data', play.piece, 'piece', 'title') + '.json'}, 'Export current piece'];
                      }),
-                     B.view (['State', 'new', 'note'], function (x, note) {
-                        note = note || {};
-                        return [
-                           ['h4', 'Enter a new note'],
-                           ['input', B.ev ({placeholder: 'line name', value: note.line}, ['onchange', 'set', ['State', 'new', 'note', 'line']])],
-                           ['select', B.ev (['onchange', 'setint', ['State', 'new', 'note', 'inner', 0, 'pclass']]), dale.do (dale.times (14, -1), function (k) {
-                              if (k === -1) return ['option', 'Pitch class'];
-                              return ['option', {value: k}, k < 10 ? k : {10: 'A', 11: 'B', 12: 'C'} [k]];
-                           })],
-                           ['input', B.ev ({placeholder: 'length', value: note.length}, ['onchange', 'set', ['State', 'new', 'note', 'length']])],
-                           ['select', B.ev (['onchange', 'setint', ['State', 'new', 'note', 'inner', 0, 'octave']]), dale.do (dale.times (8, 0), function (k) {
-                              if (k === 0) return ['option', 'Octave'];
-                              return ['option', {selected: note.octave === k, value: k}, k < 10 ? k : {10: 'A', 11: 'B', 12: 'C'} [k]];
-                           })],
-                           ['br'],
-                           ['label', 'Lig'],
-                           ['input', B.ev ({type: 'checkbox', checked: note.lig}, ['onclick', 'set', ['State', 'new', 'note', 'lig'], ! note.lig])],
-                           ['br'],
-                           B.view (['State', 'delmode'], function (x, delmode) {return [
-                              ['label', 'Delete notes'],
-                              ['input', B.ev ({type: 'checkbox', checked: delmode}, ['onclick', 'set', ['State', 'delmode'], ! delmode])]
-                           ]}),
-                           ['button', B.ev (['onclick', 'append', 'note']), 'Add note'],
-                           ['br'],
-                           ['br'],
-                        ];
-                     }),
                   ]],
                ]];
             }),
