@@ -312,47 +312,6 @@
                }
             }
          }],
-         ['append', 'note', function (x) {
-            var note = B.get ('State', 'new', 'note');
-            if (! note.inner || ! note.line || ! note.length) return;
-            note.length = eval (note.length);
-
-            var nnote;
-
-            dale.do (note.inner, function (inote) {
-               if (! inote || inote.pclass === undefined) return;
-               if (inote.pclass !== 0 && ! inote.octave) return;
-               if (inote.pclass === 0) delete inote.octave;
-               if (note.inner.length === 1) {
-                  nnote = [note.line, [inote.pclass, note.length, inote.octave]];
-               }
-               else {
-                  if (! nnote) nnote = [note.line, [[], note.length]];
-                  nnote [1] [0].push ([inote.pclass, inote.octave]);
-               }
-               if (inote.lig) nnote [1] [3] = {lig: true};
-            });
-
-            var music = (teishi.p (localStorage.getItem ('vnote_music')) || []);
-            music [B.get ('State', 'play', 'piece')].sections [B.get ('State', 'play', 'section')].notes.push (nnote);
-            localStorage.setItem ('vnote_music', JSON.stringify (music));
-            V.loadData ();
-         }],
-         ['delete', 'note', function (x, Note, line) {
-            if (! confirm ('Are you sure you want to delete the note?')) return;
-            var music = (teishi.p (localStorage.getItem ('vnote_music')) || []);
-            var notes = music [B.get ('State', 'play', 'piece')].sections [B.get ('State', 'play', 'section')].notes;
-            var counter = 0;
-            dale.do (notes, function (noteline, k) {
-               if (noteline [0] !== line) return;
-               dale.do (noteline, function (note, k2) {
-                  if (k2 === 0) return;
-                  if (counter++ === Note [3].k) noteline.splice (k2, 1)
-               });
-            });
-            localStorage.setItem ('vnote_music', JSON.stringify (music));
-            V.loadData ();
-         }],
       ], ondraw: function () {
          if (! B.get ('State', 'play')) B.do ('set', ['State', 'play'], {});
       }}, function () {
