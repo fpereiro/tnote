@@ -33,6 +33,5 @@ note (after parse):
 
 ## Todo
 
+- Use tnote format in engine.
 - Performance.
-- Edit note.
-- Decimal bars?

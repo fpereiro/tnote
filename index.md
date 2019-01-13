@@ -57,48 +57,71 @@ Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian B
 
 5. Chords are expressed as a single note segment with the note numbers being written in succession, from the lowest to the highest. The octave color of the segment belongs to that of the *lower* note.
 
-## Vnote JSON format
+## The tnote format
 
-Vnote uses JSON to store and share music. Here's a specification of the Vnote format:
+Vnote uses a text format to store and share music, called *tnote*. tnote is designed to be easy to write and moderately readable, while being very compact. This is how a tnote file looks like:
 
-```javascript
-{
-   "piece": {
-      "author": "...",
-      "title": "...",
-      // (other fields are possible)
-   },
-   "transcription": {
-      "author": "...",
-      // (other fields are possible)
-   },
-   "sections": [
-      {
-         "name": "...",
-         // (bpm must be an integer)
-         "bpm": ...,
-         // (bpb represents `beats per bar` and indicates how many quarter notes fit in a bar)
-         "bpb": ...,
-         // (the content of `notes` is specified in the next example)
-         notes: [...]
-      },
-      // (other sections are possible)
-   ]
-}
+```
+author  Johann Sebastian Bach
+title   WTC 1 - Prelude & Fugue I - BVW 846
+version 20190113
+transcription by Federico Pereiro <fpereiro@gmail.com>
+
+START SECTION
+
+title Prelude I
+bpm   92
+bpb   4
+
+(notes go here)
+
+END SECTION
+
+START SECTION
+
+title Fugue I
+bpm   60
+bpb   4
+
+(notes go here)
+
+END SECTION
 ```
 
-As for the `notes`, they are organized in an array of `notelines`. A `noteline` is an array that starts with a string indicating the name of the note line (for example, `'rh'`), and is followed by a number of notes.
+`bpm` stands for *beats por minute*. `bpb` stands for *beats per bar*. If a bar contains four beats, then `bpb` will be 4.
 
-A note is expressed an array of three or four elements: `[pitch class, duration, octave, {...}]`.
+As for the `notes`, they are organized in `notelines`. A `noteline` lists all the notes belonging to a certain line and a certain bar. This is the basic structure:
 
-- The pitch class must be an integer between 0 and 12.
-- The duration is a number or fraction (1 for a quarter note; 2 for a half note; 4 for a whole note; 1/2 for an eight note; 1/4 for a sixteenth note; etc.).
-- The octave is an integer between 1 and 7. It is not required for rest notes.
-- The options object is optional and intends to give additional information to the interpreter (both human and digital). Currently the only option interpreted by Vnote is the `lig` marking to express ligatures: `{lig: true}`.
+```
+ NN name notes...
+```
 
-Chords are expressed differently: their third element is irrelevant. The notes and octaves are expressed in the first element of the array, expressed as an array of arrays of the following form: `[note, octave]`. The notes of the array should be sorted from lowest to highest. For example, a quarter C major chord in the fourth octave, lasting for a whole note, should be written like this: `[[[1, 4], [5, 4], [8, 4]], 4]`.
+`NN` stands for the bar number. `name` is the name of the line (for example, `rh1` if it's the first line of the right hand of a piano piece). Here's an example:
 
-## Available music in Vnote JSON format
+```
+1 rh2 0*3 41
+```
+
+Notes are separated by spaces. Multiple spaces can be used to align the notes in a more readable way. Here's an example of an entire bar.
+
+```
+ 4 rh  0/2       4C9/2     4C9/2     52B/2     0/2       4C9/2     4C9/2     4B8/2
+ 4 lh  39/4 44/4 39/4 44/4 38/4 44/4 38/4 44/4 39/4 44/4 39/4 44/4 34/4 44/4 34/4 44/4
+```
+
+As for the notes, this is how you write them:
+
+- Start with the octave, which is a number between 1 and 7.
+- Immediately after, place the pitch class of the note, which is 1-9 or A, B or C. For example, C4 would be written 41; and G5 would be written 58; while B3 would be written 3C.
+- If the note is a rest, you write `0` and don't add an octave.
+- If the note is a chord, start writing the octave number of the first note. Then write the notes of the chord sorted from low to high. If between two contiguous notes on the chord there's a jump of more than an octave (for example: C4 to D5), put a + in the middle. For example, the chord C4+D5 would be written `41+3`. If the jump is of more than two octaves, you'd write `41++3` instead.
+- Next goes the duration. If the duration is exactly one beat (a quarter note), nothing should be added. If the note is a fraction expressible as 1 / n (where n is an integer), you would place `/n` after the note. For example, for half a beat you would write `41/2`. For a quarter beat, `41/4`. For a third of a beat, `41/3`.
+- If the note is a multiple of a beat, you'd write `41*2` (for twice a beat), `41*4` (for four times a beat), etc.
+- You can also multiply a note by a number. For example, for one and a half beats, you can write `41*1.5`.
+- You can also multiply by a fraction. For the same note as above, you can write `41*3/2`.
+- Finally, add a `L` if the note is ligated to the next one.
+
+## Available music in tnote format
 
 Go [here](https://github.com/fpereiro/vnote/tree/master/music) to see a list of available pieces.
 
