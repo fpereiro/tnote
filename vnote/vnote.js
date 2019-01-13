@@ -50,15 +50,15 @@
       return lines;
    }
 
-   V.playnote = function (note, bpm, volume) {
+   V.playnote = function (note, bpm, volume, mute) {
       // If silent note, ignore the note.
       if (note [0] === 0) return;
 
       // We add 0.5s to give it more sustain and a minimum length.
-      if (type (note [0]) === 'integer') return Synth.play ({note: note [0], octave: note [2], duration: 60 / bpm * note [3].dur + 0.5}, Synth.instruments.piano, volume ? {volume: volume} : {});
+      if (type (note [0]) === 'integer') return Synth.play ({note: note [0], octave: note [2], duration: 60 / bpm * note [3].dur + 0.5}, Synth.instruments.piano, volume ? {volume: volume} : {}, mute);
 
       dale.do (note [0], function (n) {
-         Synth.play ({note: n [0], octave: n [1], duration: 60 / bpm * note [3].dur + 0.5}, Synth.instruments.piano, volume ? {volume: volume} : {});
+         Synth.play ({note: n [0], octave: n [1], duration: 60 / bpm * note [3].dur + 0.5}, Synth.instruments.piano, volume ? {volume: volume} : {}, mute);
       });
    }
 
@@ -127,6 +127,8 @@
             if (! lines [linek]) lines [linek] = {};
             if (! lines [linek] [name]) lines [linek] [name] = [];
             lines [linek] [name].push (note);
+            // Preload notes
+            V.playnote (note, B.get ('State', 'play', 'bpm'), undefined, true);
          });
       });
 

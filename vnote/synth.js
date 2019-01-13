@@ -54,9 +54,10 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       var key = JSON.stringify ({note: note, instrument: instrument.name, options: options});
       if (! Synth.cache [key]) {
          Synth.cache [key] = new Audio (Synth.createSound (note, instrument, options));
-         Synth.cache [key].play ();
+         if (! mute) Synth.cache [key].play ();
       }
       else {
+         if (mute) return;
          if (Synth.cache [key].paused) Synth.cache [key].play ();
          else Synth.cache [key].cloneNode ().play ();
       }
@@ -78,7 +79,9 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    }
 
    // note.note 0-12, octave is 1 to 7, duration is in seconds
-   Synth.createSound = function (note, instrument, options) {
+   Synth.createSound = function (note, instrument, options, raw) {
+
+      var t = Date.now ();
 
       options = dale.obj (options || {}, teishi.c (Synth.config), function (v, k) {return [k, v]});
 
@@ -123,6 +126,8 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          pack (1, data.length * options.channels * options.bitsPerSample / 8), // Chunk length
          data
       ];
+
+      if (raw) return out;
 
       return (window.URL || window.webkitURL).createObjectURL (new Blob (out, {type: 'audio/wav'}));
    }
