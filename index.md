@@ -10,7 +10,7 @@ Vnote is an alternative and experimental musical notation. It is based on the fo
 
 ## Using Vnote
 
-Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://cdn.rawgit.com/fpereiro/vnote/4ac8d736c42d58046e42315f493fe22e043cb20b/vnote/vnote.html).
+Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://fpereiro.github.io/vnote/vnote/vnote.html).
 
 Vnote uses Keith Horwood's amazing [audiosynth library](https://github.com/keithwhor/audiosynth) to generate the synthetized piano sounds.
 

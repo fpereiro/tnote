@@ -280,7 +280,7 @@
             V.loadData ();
          }],
          ['import', 'piece', function (x) {
-            var url = prompt ('Please enter the URL where the piece can be found', 'https://cdn.rawgit.com/fpereiro/vnote/7fe9e7113463463b26dc2059ca502978d01eb713/music/Bach-WTC_846.json');
+            var url = prompt ('Please enter the URL where the piece can be found', 'https://cdn.jsdelivr.net/gh/fpereiro/vnote@4ac8d736c42d58046e42315f493fe22e043cb20b/music/Bach-WTC_846.json');
             c.ajax ('get', url, {}, '', function (error, data) {
                if (error) return alert ('There was an error importing the piece.');
                if (type (data) !== 'object') return alert ('The piece you are trying to import has an invalid format');
