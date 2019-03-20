@@ -1,5 +1,3 @@
-> "Y es música, música, siempre, sí." -- Norberto Napolitano
-
 ## Internal structure
 
 localStorage:
@@ -30,8 +28,3 @@ note (after parse):
 - dur is different only for longer notes (head note of ligature).
 - mute is for ligated notes.
 - t is measured in beats, marks start point.
-
-## Todo
-
-- Use tnote format in engine.
-- Performance.

@@ -114,7 +114,7 @@ As for the notes, this is how you write them:
 - Start with the octave, which is a number between 1 and 7.
 - Immediately after, place the pitch class of the note, which is 1-9 or A, B or C. For example, C4 would be written 41; and G5 would be written 58; while B3 would be written 3C.
 - If the note is a rest, you write `0` and don't add an octave.
-- If the note is a chord, start writing the octave number of the first note. Then write the notes of the chord sorted from low to high. If between two contiguous notes on the chord there's a jump of more than an octave (for example: C4 to D5), put a + in the middle. For example, the chord C4+D5 would be written `41+3`. If the jump is of more than two octaves, you'd write `41++3` instead.
+- If the note is a chord, start writing the octave number of the first note. Then write the notes of the chord sorted from low to high. If between two contiguous notes on the chord there's a jump of more than an octave (for example: C4 to D5), put a + in the middle. For example, the chord C4+D5 would be written `41+3`. If the jump is of two octaves, you'd write `41++3` instead. In general, for a jump of n octaves, place n `+` signs.
 - Next goes the duration. If the duration is exactly one beat (a quarter note), nothing should be added. If the note is a fraction expressible as 1 / n (where n is an integer), you would place `/n` after the note. For example, for half a beat you would write `41/2`. For a quarter beat, `41/4`. For a third of a beat, `41/3`.
 - If the note is a multiple of a beat, you'd write `41*2` (for twice a beat), `41*4` (for four times a beat), etc.
 - You can also multiply a note by a number. For example, for one and a half beats, you can write `41*1.5`.
@@ -146,3 +146,7 @@ The entire dodecaphonic scale, in solfège, is then:
 **do jo re ka mi fa pe sol bu la te zi**
 
 The sounds are nonsensical, but they are chosen to start with different letters than the traditional seven sounds. Notice also that *si* is pronounced *zi* to start with a different letter than *sol*.
+
+An alternate idea I'm playing with is to sing the numbers from 1 to 12 instead of a nonsensical sound. This has the advantage that the mathematical relationship between notes starts to be immediately more clear and in the forefront of your mind. The disadvantage is that it's not so easy to pronounce numbers in a quick and unambiguous way (at least not in the languages I know).
+
+In English, I'm working with these sounds: "ua", "two", "tri", "fo", "fai", "si", "sev", "eit", "nai", "te", "il", "tue".
