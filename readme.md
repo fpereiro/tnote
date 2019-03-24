@@ -9,7 +9,14 @@ You can use the latest version of Vnote [here](https://fpereiro.github.io/vnote/
 ## Todo
 
 - Use tnote format in engine.
-- View to manage stored pieces
-   - Batch retrieval of links (copy-paste).
-   - Show existing pieces in table, with actions: download & delete.
+- kerntnote
+   - Check 887 and put it up.
+   - Put link to original library in library
+   - Put script up
+- readme
+   - numeric solfege
+   - pretty printing rules for tnote: notes that start first should be aligned. And no overlap if a note that are not simultaneous.
+- Hardcode library retrieval link and show list of pieces.
+- Store in localstorage the settings for each piece, the keys being the links.
+- Remove old jsons.
 - Performance.
