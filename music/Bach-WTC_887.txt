@@ -1,5 +1,5 @@
 author  Johann Sebastian Bach
-title   WTC 2 - Prelude & Fugue XVIII - BVW 887
+title   The Well-Tempered Clavier - Book 2 - Prelude & Fugue XVIII - BVW 887
 version 20190113
 transcription by Federico Pereiro <fpereiro@gmail.com>
 
