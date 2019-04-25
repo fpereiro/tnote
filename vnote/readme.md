@@ -1,30 +1,31 @@
 ## Internal structure
 
-localStorage:
-- vnote_data: array of pieces.
-- vnote_config: {
-   barsperline: INT
-   width: INT
-   piece: INT
-}
 
-State.playing: true/false. Starts/stops playing.
 
-State.play: {
-   piece:   INT
-   section: INT
-   bpm:     INT
-   lines: [STR, ...]
-   start: INT|UND
-   stop:  INT|UND
-}
 
-note (before parse):
-- single: pitch class, length, octave, params {lig: true}
-- chord: [[pitch class, octave], ...], length, undefined, params {lig: true}
+## Current version
 
-note (after parse):
-- pitch class, length, octave, {lig: true|und, t: startTime, mute: true|und, dur: int, k: int}
-- dur is different only for longer notes (head note of ligature).
-- mute is for ligated notes.
-- t is measured in beats, marks start point.
+State.view
+State.play
+   playing: true|false
+   section: INTEGER
+   muted:   {LINENAME1: true|false, ...}
+   bpm:     INTEGER
+   from:    INTEGER
+   to:      INTEGER
+   backgroundVolume: FLOAT
+
+Data.library: [name, link]
+Data.piece: {
+   title:  STRING
+   author: STRING
+   sections: [{
+      title: STRING
+      bpm:   INTEGER
+      bpb:   INTEGER
+      lines: {
+         LINENAME: [
+            // Single note
+            [octave, pitch, duration, {ligature: true|UNDEFINED, fermata: true|UNDEFINED, offset: INTEGER, duration: INTEGER, k: INTEGER}]
+            // Chord
+            [undefined, [[octave, pitch], [octave, pitch], ...], duration, {...}],
