@@ -81,8 +81,6 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
    // note.note 0-12, octave is 1 to 7, duration is in seconds
    Synth.createSound = function (note, instrument, options, raw) {
 
-      var t = Date.now ();
-
       options = dale.obj (options || {}, teishi.c (Synth.config), function (v, k) {return [k, v]});
 
       var frequency = options.notes [note.note - 1] * Math.pow (2, note.octave - options.baseOctave);
@@ -97,12 +95,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
          data [(i << 1) + 1] = value >> 8;
       });
 
-      dale.do (dale.times (Math.round (options.sampleRate * note.duration), Math.round (options.sampleRate * instrument.attack)), function (i) {
-         var value = 1 - ((i - (options.sampleRate * instrument.attack)) / (options.sampleRate * (note.duration - instrument.attack)));
+      var q1 = Math.round (options.sampleRate * instrument.attack), i = q1, value;
+      while (i < q1 + Math.round (options.sampleRate * note.duration)) {
+         value = 1 - ((i - (options.sampleRate * instrument.attack)) / (options.sampleRate * (note.duration - instrument.attack)));
          value = volume * Math.pow (value, dampen) * instrument.wave (i, options.sampleRate, frequency, volume);
          data [i << 1] = value;
          data [(i << 1) + 1] = value >> 8;
-      });
+         i++;
+      }
 
       var pack = function (c, arg) {
          return [new Uint8Array ([arg, arg >> 8]), new Uint8Array ([arg, arg >> 8, arg >> 16, arg >> 24])] [c];

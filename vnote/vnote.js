@@ -146,13 +146,15 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
    V.playnote = function (note, bpm, volume, mute) {
       // If silent or ligated note, ignore the note.
-      if (note [0] === 0 || note [3].duration === 0) return;
+      if (note [1] === 0 || note [3].duration === 0) return;
+
+      volume = {volume: (volume || 1) * 0.5};
 
       // We add 0.5s to give it more sustain and a minimum length.
-      if (type (note [1]) === 'integer') return Synth.play ({note: note [1], octave: note [0], duration: 60 / bpm * note [3].duration + 0.5}, Synth.instruments.piano, volume ? {volume: volume} : {}, mute);
+      if (type (note [1]) === 'integer') return Synth.play ({note: note [1], octave: note [0], duration: 60 / bpm * note [3].duration + 0.5}, Synth.instruments.piano, volume, mute);
 
       dale.do (note [1], function (n) {
-         Synth.play ({note: n [1], octave: n [0], duration: 60 / bpm * note [3].duration + 0.5}, Synth.instruments.piano, volume ? {volume: volume} : {}, mute);
+         Synth.play ({note: n [1], octave: n [0], duration: 60 / bpm * note [3].duration + 0.5}, Synth.instruments.piano, volume, mute);
       });
    }
 
@@ -187,7 +189,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
          if (offset > -15) {
             document.getElementById (name + ':' + k).className = 'playing';
-            V.playnote (note, options.bpm, options.muted [name] ? options.backgroundVolume : 0.6);
+            V.playnote (note, options.bpm, options.muted [name] ? options.backgroundVolume : 1);
             if (k > 0) document.getElementById (name + ':' + (k - 1)).className = '';
 
             window.setTimeout (function () {
