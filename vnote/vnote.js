@@ -87,7 +87,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
                dale.do (pitch.split (''), function (pitch) {
                   if (pitch === '+') return octave++;
                   pitch = ! pitch.match (/[A-C]/) ? parseInt (pitch) : {'A': 10, 'B': 11, 'C': 12} [pitch];
-                  if (output [1].length && output [1] [0] [1] >= pitch) octave++;
+                  if (output [1].length && output [1] [output [1].length - 1] [1] >= pitch) octave++;
                   output [1].push ([octave, pitch]);
                });
             }
