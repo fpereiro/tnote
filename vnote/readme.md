@@ -3,7 +3,7 @@
 
 
 
-## Current version
+## Client Data/State structure
 
 State.view
 State.play
@@ -11,8 +11,8 @@ State.play
    section: INTEGER
    muted:   {LINENAME1: true|false, ...}
    bpm:     INTEGER
-   from:    INTEGER
-   to:      INTEGER
+   start:   INTEGER
+   end:     INTEGER
    backgroundVolume: FLOAT
 
 Data.library: [name, link]

@@ -118,7 +118,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
          });
       });
 
-      // We go again through all the notes and add the following parameters to the object in the fourth position of each note: {offset: INTEGER (beats since the start), duration: integer (0 if the note is muted by a ligature, or the number of beats of the note if it is prolonged by a ligature), k: number of note in the line}
+      // We go again through all the notes and add the following parameters to the object in the fourth position of each note: {offset: INTEGER (bars since the start), duration: integer (0 if the note is muted by a ligature, or the number of beats of the note if it is prolonged by a ligature), k: number of note in the line}
       dale.do (piece.sections, function (section) {
          dale.do (section.lines, function (line) {
             var offset = 0;
@@ -126,7 +126,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
                note [3].k = k;
                if (note [3].duration === undefined) note [3].duration = note [2];
                note [3].offset = offset;
-               offset += note [2];
+               offset += note [2] / section.bpb;
                if (Math.ceil  (offset) - offset < 0.02) offset = Math.ceil  (offset);
                if (offset - Math.floor (offset) < 0.02) offset = Math.floor (offset);
                // If this is the first note of a ligature, then mark the rest of the notes within the ligature.
@@ -146,7 +146,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
    V.playnote = function (note, bpm, volume, mute) {
       // If silent or ligated note, ignore the note.
-      if (note [1] === 0 || note [3].duration === 0) return;
+      if (note [1] === 0 || note [3].duration === 0 || volume === 0) return;
 
       volume = {volume: (volume || 1) * 0.5};
 
@@ -160,51 +160,45 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
    V.play = function () {
 
-      var lines = B.get ('Data', 'piece', 'sections', B.get ('State', 'play', 'section')).lines;
+      var section = B.get ('Data', 'piece', 'sections', B.get ('State', 'play', 'section'));
 
       var init = Date.now () + 100;
 
       var playnext = function (name, line, k, repeat) {
 
-         var options = B.get ('State', 'play'), note = line [k];
+         setTimeout (function () {
 
-         // If we run out of notes, or we have to stop playing altogether, or if the stop parameter means that we should stop reproducing notes.
-         if (! note || ! options.playing || (options.stop && note [3].offset >= options.stop)) {
-            document.getElementById (name + ':' + (k - 1)).className = '';
-            if (options.playing) setTimeout (function () {
+            var options = B.get ('State', 'play'), note = line [k];
+
+            // If we run out of notes, or we have to stop playing altogether, or if the end parameter means that we should stop reproducing notes.
+            if (! note || ! options.playing || (options.end && note [3].offset >= options.end)) {
+               document.getElementById (name + ':' + (k - 1)).className = '';
+               if (! options.playing) return;
                // We start playing the whole thing again.
-               playnext (name, line, 0, repeat + 1);
-            }, 3);
-            return;
-         }
+               return playnext (name, line, 0, repeat + 1);
+            }
 
-         // There might be no note if we're at the end of the line. If there's a note and its start is after options.start, we call the function again after a while.
-         if (note && options.start && options.start > note [3].offset) return setTimeout (function () {
-            playnext (name, line, k + 1, repeat);
-         }, 3);
+            // There might be no note if we're at the end of the line. If there's a note and its start is after options.start, we call the function again after a while.
+            if (note && (options.start - 1) > note [3].offset) return playnext (name, line, k + 1, repeat);
 
-         var offset = Date.now () - init - ((note [3].offset - (options.start || 0)) * 1000 * 60 / options.bpm);
+            var offset = Date.now () - init - ((note [3].offset - (options.start - 1)) * 1000 * 60 / options.bpm * section.bpb);
 
-         offset -= repeat * ((options.stop || line [line.length - 1] [3].offset + line [line.length - 1] [3].duration) - (options.start || 0)) * (1000 * 60 / options.bpm);
+            offset -= repeat * ((options.end || line [line.length - 1] [3].offset + line [line.length - 1] [3].duration) - (options.start || 0)) * (1000 * 60 / options.bpm);
 
-         if (offset > -15) {
+            // We will play this note when the time comes.
+            if (offset < -15) return playnext (name, line, k, repeat);
+
             document.getElementById (name + ':' + k).className = 'playing';
             V.playnote (note, options.bpm, options.muted [name] ? options.backgroundVolume : 1);
             if (k > 0) document.getElementById (name + ':' + (k - 1)).className = '';
 
-            window.setTimeout (function () {
-               // We play the next note.
-               playnext (name, line, k + 1, repeat);
-            }, 3);
-         }
-         else window.setTimeout (function () {
-            // We will play this note when the time comes.
-            playnext (name, line, k, repeat);
-         }, 3);
+            playnext (name, line, k + 1, repeat);
+
+         }, 8);
       }
 
-      dale.do (dale.keys (lines), function (name) {
-         playnext (name, lines [name], 0, 0);
+      dale.do (section.lines, function (line, name) {
+         playnext (name, line, 0, 0);
       });
    }
 
@@ -218,7 +212,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
       dale.do (section.lines, function (line, name) {
          dale.do (line, function (note) {
-            var k = Math.floor (note [3].offset / (section.bpb * barsperline));
+            var k = Math.floor (note [3].offset / barsperline);
             if (! printlines [k])        printlines [k] = {};
             if (! printlines [k] [name]) printlines [k] [name] = [];
             printlines [k] [name].push (note);
@@ -414,11 +408,11 @@ Please refer to readme.md to read the annotated source (but not yet!).
                   return [k, false];
                }),
                bpm:     section.bpm,
-               from:    1,
-               to:      (function () {
+               start:   1,
+               end:     (function () {
                   var line = section.lines [dale.keys (section.lines) [0]];
                   var note = line [line.length - 1];
-                  return (note [3].offset + note [2]) / section.bpb;
+                  return note [3].offset + note [2] / section.bpb;
                }) (),
                backgroundVolume: B.get ('State', 'play', 'backgroundVolume') || 0,
             });
@@ -459,8 +453,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
                ]],
                ['style', ['input.play', {'margin-left': 5}]],
                ['div', {class: 'float'}, [
-                  ['input', B.ev ({class: 'play', readonly: play.playing, placeholder: 'from', value: play.from}, ['onchange', 'setint', ['State', 'play', 'from']])],
-                  ['input', B.ev ({class: 'play', readonly: play.playing, placeholder: 'to',   value: play.to},   ['onchange', 'setint', ['State', 'play', 'to']])],
+                  ['input', B.ev ({class: 'play', readonly: play.playing, placeholder: 'start', value: play.start}, ['onchange', 'setint', ['State', 'play', 'start']])],
+                  ['input', B.ev ({class: 'play', readonly: play.playing, placeholder: 'end',   value: play.end},   ['onchange', 'setint', ['State', 'play', 'end']])],
                   ['input', B.ev ({class: 'play', readonly: play.playing, placeholder: 'bpm',  value: play.bpm},  ['onchange', 'setint', ['State', 'play', 'bpm']])],
                   ['input', B.ev ({style: 'width: 150px', class: 'play', readonly: play.playing, placeholder: 'backgroundVolume', value: play.backgroundVolume},   ['onchange', 'setfloat', ['State', 'play', 'backgroundVolume']])],
                ]],

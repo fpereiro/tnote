@@ -50,6 +50,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
    Synth.cache = {};
 
+   // The mute parameter exists for creating the note before it is played.
    Synth.play = function (note, instrument, options, mute) {
       var key = JSON.stringify ({note: note, instrument: instrument.name, options: options});
       if (! Synth.cache [key]) {
