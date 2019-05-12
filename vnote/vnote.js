@@ -162,7 +162,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
       var section = B.get ('Data', 'piece', 'sections', B.get ('State', 'play', 'section'));
 
-      var init = Date.now () + 100;
+      var init = Date.now () + 200;
 
       var playnext = function (name, line, k, repeat) {
 
@@ -170,22 +170,23 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
             var options = B.get ('State', 'play'), note = line [k];
 
+            if (! options.playing) return document.getElementById (name + ':' + (k - 1)).className = '';
+
             // If we run out of notes, or we have to stop playing altogether, or if the end parameter means that we should stop reproducing notes.
             if (! note || ! options.playing || (options.end && note [3].offset >= options.end)) {
                document.getElementById (name + ':' + (k - 1)).className = '';
-               if (! options.playing) return;
                // We start playing the whole thing again.
                return playnext (name, line, 0, repeat + 1);
             }
 
-            // There might be no note if we're at the end of the line. If there's a note and its start is after options.start, we call the function again after a while.
+            // If there's a note and its start is after options.start, we call the function again.
             if (note && (options.start - 1) > note [3].offset) return playnext (name, line, k + 1, repeat);
 
             var offset = Date.now () - init - ((note [3].offset - (options.start - 1)) * 1000 * 60 / options.bpm * section.bpb);
 
             offset -= repeat * ((options.end || line [line.length - 1] [3].offset + line [line.length - 1] [3].duration) - (options.start || 0)) * (1000 * 60 / options.bpm);
 
-            // We will play this note when the time comes.
+            // We will play this note when the time comes, but not now.
             if (offset < -15) return playnext (name, line, k, repeat);
 
             document.getElementById (name + ':' + k).className = 'playing';
@@ -261,7 +262,11 @@ Please refer to readme.md to read the annotated source (but not yet!).
                            style: (note [0] === 2 || note [0] === 3 ? 'color: black;' : '') + (note [3].duration === 0 ? 'border-left: solid 3px red;' : '') + 'cursor: pointer; width: ' + (note [2] * width) + 'px; background-color: ' + cmap [note [0] || 0]
                         }, ['onclick', 'click', 'note', note, name]), nname];
                      }),
-                     //dale.keys (line) [0] === name ? ['li', {class: 'label', style: 'text-align: center'}, Math.round (k * barsperline + linelength / section.bpb)] : [],
+                     (function () {
+                        if (dale.keys (printline) [0] !== name) return;
+                        var lastnote = printline [name] [printline [name].length - 1];
+                        return ['li', {class: 'label', style: 'text-align: center'}, Math.round (lastnote [3].offset + lastnote [2] / section.bpb)];
+                     }) (),
                      ['br'],
                   ]];
                }),
