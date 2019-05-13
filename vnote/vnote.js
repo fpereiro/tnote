@@ -170,24 +170,28 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
             var options = B.get ('State', 'play'), note = line [k];
 
-            if (! options.playing) return document.getElementById (name + ':' + (k - 1)).className = '';
+            if (! options.playing) return (document.getElementById (name + ':' + (k - 1)) || {}).className = '';
 
-            // If we run out of notes, or we have to stop playing altogether, or if the end parameter means that we should stop reproducing notes.
-            if (! note || ! options.playing || (options.end && note [3].offset >= options.end)) {
-               document.getElementById (name + ':' + (k - 1)).className = '';
+            // If we run out of notes, or if the end parameter means that we should stop reproducing notes:
+            if (! note || (options.end && note [3].offset >= options.end)) {
+               (document.getElementById (name + ':' + (k - 1)) || {}).className = '';
                // We start playing the whole thing again.
                return playnext (name, line, 0, repeat + 1);
             }
 
-            // If there's a note and its start is after options.start, we call the function again.
+            // If there's a note and its start is after options.start, we call the function again for the next note.
             if (note && (options.start - 1) > note [3].offset) return playnext (name, line, k + 1, repeat);
 
             var offset = Date.now () - init - ((note [3].offset - (options.start - 1)) * 1000 * 60 / options.bpm * section.bpb);
+            if (repeat) {
+               var end   = options.end || Math.round (line [line.length - 1] [3].offset + line [line.length - 1] [2] / section.bpb);
+               var start = (options.start || 1) - 1;
 
-            offset -= repeat * ((options.end || line [line.length - 1] [3].offset + line [line.length - 1] [3].duration) - (options.start || 0)) * (1000 * 60 / options.bpm);
+               offset -= repeat * (end - start) * (1000 * 60 / options.bpm * section.bpb);
+            }
 
             // We will play this note when the time comes, but not now.
-            if (offset < -15) return playnext (name, line, k, repeat);
+            if (offset < -3) return playnext (name, line, k, repeat);
 
             document.getElementById (name + ':' + k).className = 'playing';
             V.playnote (note, options.bpm, options.muted [name] ? options.backgroundVolume : 1);
@@ -195,7 +199,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
             playnext (name, line, k + 1, repeat);
 
-         }, 8);
+         }, 3);
       }
 
       dale.do (section.lines, function (line, name) {

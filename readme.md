@@ -8,7 +8,6 @@ You can use the latest version of Vnote [here](https://fpereiro.github.io/vnote/
 
 ## Todo
 
-- Fix options.end.
 - Preload when changing bpm.
 - Don't preload mute notes if background volume is 0.
 - Check 887 and put it up.
