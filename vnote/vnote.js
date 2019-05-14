@@ -430,6 +430,19 @@ Please refer to readme.md to read the annotated source (but not yet!).
          ['change', ['State', 'play', 'playing'], function () {
             if (B.get ('State', 'play', 'playing')) V.play ();
          }],
+         ['change', ['State', 'play', 'bpm'], function () {
+            var section = B.get ('Data', 'piece', 'sections', B.get ('State', 'play', 'section'));
+            if (! section) return;
+            // Preload notes if bpm changes.
+            dale.do (section.lines, function (line, name) {
+               if (B.get ('State', 'play', 'muted', name) && B.get ('State', 'play', 'backgroundVolume') === 0) return;
+               dale.do (line, function (note) {
+                  setTimeout (function () {
+                     V.playnote (note, B.get ('State', 'play', 'bpm'), undefined, true);
+                  }, 1);
+               });
+            });
+         }],
       ];
       return [
          ['style', [

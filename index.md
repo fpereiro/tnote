@@ -121,9 +121,15 @@ As for the notes, this is how you write them:
 - You can also multiply by a fraction. For the same note as above, you can write `41*3/2`.
 - Finally, add a `L` if the note is ligated to the next one.
 
+tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are: 1) notes on the same bar that start at the same time should be horizontally aligned; and 2) if there's no overlap between two notes in different lines, then the note that starts later should be pushed to the right until its starting line avoids intersection with the other note.
+
 ## Available music in tnote format
 
 Go [here](https://github.com/fpereiro/vnote/tree/master/music) to see a list of available pieces.
+
+I am currently working on a script to convert pieces into tnote from the [wonderful Humdrum music repository](https://github.com/humdrum-tools/humdrum-data), which contains hundreds of pieces in a format named *kern*. This holds the promise of creating a corpus of tnote pieces while avoiding hand transcription (though proofreading will probably still be needed).
+
+This is a good place to thank the [Computer Assisted Music and Acoustics Research](https://ccrma.stanford.edu/CCRMA/newOverview/assisted.html) for making digitized transcriptions of music readily available.
 
 ## Notes on learning music using Vnote
 
