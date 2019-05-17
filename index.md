@@ -127,7 +127,7 @@ tnote is oblivious to multiple spaces. However, I employ two rules to [pretty pr
 
 Go [here](https://github.com/fpereiro/vnote/tree/master/music) to see a list of available pieces.
 
-I am currently working on a script to convert pieces into tnote from the [wonderful Humdrum music repository](https://github.com/humdrum-tools/humdrum-data), which contains hundreds of pieces in a format named *kern*. This holds the promise of creating a corpus of tnote pieces while avoiding hand transcription (though proofreading will probably still be needed).
+I am currently working on a [script](https://github.com/fpereiro/vnote/blob/master/utils/kerntnote.js) to convert pieces into tnote from the [wonderful Humdrum music repository](https://github.com/humdrum-tools/humdrum-data), which contains hundreds of pieces in a format named *kern*. This holds the promise of creating a corpus of tnote pieces while avoiding hand transcription (though proofreading will probably still be needed).
 
 This is a good place to thank the [The Center for Computer Assisted Research in the Humanities](https://ccrma.stanford.edu/CCRMA/newOverview/assisted.html) for making digitized transcriptions of music readily available.
 
