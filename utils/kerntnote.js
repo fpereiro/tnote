@@ -10,6 +10,7 @@ Output is printed to the console. It can be caught by using the ">", like: node 
 http://www.humdrum.org/guide/ch02/
 http://www.humdrum.org/guide/ch06/
 http://www.humdrum.org/rep/kern/
+http://www.humdrum.org/Humdrum/representations/kern.html#Humdrum%20Revisited
 */
 
 var dale   = require ('dale');
@@ -21,7 +22,7 @@ var type = teishi.t, clog = console.log;
 /*
 // BACH WTC 1 - PRELUDE 1
 // http://www.musedata.org/cgi-bin/mddata?composer=bach&edition=bg&genre=keybd/wtc-i&work=0846&format=pdf&movement=01
-var DATA      = fs.readFileSync ('kern/wtc1p01.krn', 'utf8');
+var DATA      = fs.readFileSync ('bach-wtc/kern/wtc1p01.krn', 'utf8');
 var LINENAMES = ['rh', 'lh1', 'lh2'];
 var MAP       = [[1, ['rh', 'lh1', 'lh2']]];
 */
@@ -29,22 +30,29 @@ var MAP       = [[1, ['rh', 'lh1', 'lh2']]];
 /*
 // BACH WTC 1 - FUGUE 1
 // http://www.musedata.org/cgi-bin/mddata?composer=bach&edition=bg&genre=keybd/wtc-i&work=0846&format=pdf&movement=02
-var DATA      = fs.readFileSync ('kern/wtc1f01.krn', 'utf8');
+var DATA      = fs.readFileSync ('bach-wtc/kern/wtc1f01.krn', 'utf8');
 var LINENAMES = ['rh1', 'rh2', 'lh1', 'lh2'];
 var MAP       = [[1, ['lh2', 'lh1', 'rh2', 'rh1']]];
 */
 
 // BACH WTC 2 - PRELUDE 18
 // http://www.musedata.org/cgi-bin/mddata?composer=bach&edition=bg&genre=keybd/wtc-ii&work=0887&format=pdf&movement=01
-var DATA      = fs.readFileSync ('kern/wtc2p18.krn', 'utf8');
+var DATA      = fs.readFileSync ('bach-wtc/kern/wtc2p18.krn', 'utf8');
 var LINENAMES = ['rh1', 'rh2', 'lh1', 'lh2'];
 var MAP       = [
-   [1, ['rh1', 'lh1', 'rh2', 'lh2']],
-   [5, ['rh1', 'rh2', 'lh1', 'lh2']],
+   [1,  ['rh1', 'lh1', 'rh2', 'lh2']],
+   [5,  ['rh1', 'rh2', 'lh1', 'lh2']],
+   [8,  ['rh2', 'rh1', 'lh1', 'lh2']],
+   [34, ['rh1', 'rh2', 'lh1', 'lh2']],
+   [45, ['rh1', 'rh2', 'lh1', 'lh2']],
+   [50, ['rh1', 'rh2', 'lh1', 'lh2']],
 ];
 
-var getnote = function (where, s, prelig) {
+var getnote = function (where, s, prelig, appogiata) {
    var S = s;
+   s = s.replace (/^!*\s*/, '');
+   s = s.replace (/\(*/g, '');
+   s = s.replace (/\)*/g, '')
    if (! s.match (/^(\d|\[)/)) return;
    var lig = s [0] === '[' || prelig;
    s = s.replace (/^\[/, '');
@@ -61,6 +69,14 @@ var getnote = function (where, s, prelig) {
       s = s.replace (dots, '');
    }
    duration = Math.round (duration * 1000) / 1000;
+   if (appogiata) {
+      var apporig = appogiata;
+      appogiata = appogiata.replace ('L', '').replace ('F', '').replace ('P', '').split (/[*\/]/);
+      if (appogiata.length === 1)      duration -= 1;
+      else if (appogiata.length === 3) duration -= parseFloat (appogiata [1]) / parseFloat (appogiata [2]);
+      else if (apporig.match (/\*/)) duration -= parseFloat (appogiata [1]);
+      else                             duration -= 1 / parseFloat (appogiata [1]);
+   }
 
    var fermata, ligclo;
 
@@ -71,11 +87,17 @@ var getnote = function (where, s, prelig) {
       var accid = v.match (/[#\-n]+/) || '';
       if (accid) accid = accid [0];
       v = v.replace (accid, '');
-      v = v.replace (/[tx_]+/g, '');
+      v = v.replace (/[x_]+/g, '');
       ligclo = ligclo || v [v.length - 1] === ']';
       v = v.replace (/]/, '');
       fermata = fermata || v [0] === ';';
-      v = v.replace (/[;\/\\LJkpy)]/g, '');
+      appogiatura = !! v.match ('P');
+      v = v.replace (/[;\/\\LJKkPpy)]/g, '');
+      // trill Tt go up multiple times (to the next note in the scale) and back again
+      // mordent Mm go up once (1 or 2 semis) and back again
+      // inverted mordent Ww go down once (1 or 2 semis) and back again
+      // q grace note, Q grupetto
+      // P appogiatura, p shortened note after appogiatura
 
       if (v.length > 0) clog ('WARNING: unexpected elements in note', where, '"' + v + '"', 'original:', S);
 
@@ -124,12 +146,14 @@ var getnote = function (where, s, prelig) {
    }
    if (! ligclo && lig) output += 'L';
    if (fermata)         output += 'F';
+   if (appogiatura)     output += 'P';
 
    return output;
 }
 
 var bars = [], start, end;
 
+// We split the kern file into bars.
 dale.do (DATA.split ('\n'), function (line) {
    if (line.match (/^=\d/)) {
       bars.push ([]);
@@ -140,18 +164,40 @@ dale.do (DATA.split ('\n'), function (line) {
    if (start && ! end) bars [bars.length - 1].push (line.split ('\t'));
 });
 
-var output = '', ligatures = dale.obj (LINENAMES, function (v) {return [v, false]});
-
-process.on ('exit', function () {
-   clog (output);
+// The ibar section is only for debugging kerntnote.
+var ibars = [];
+dale.do (bars, function (v) {
+   var bar = [];
+   dale.do (v, function (v2) {
+      dale.do (v2, function (v3, k3) {
+         if (bar [k3] === undefined) bar [k3] = [];
+         bar [k3].push (v3);
+         //if (getnote ('foo', v3)) bar [k3].push (getnote ('foo', v3));
+         //else bar [k3].push (v3);
+      });
+   });
+   ibars.push (bar);
+});
+dale.do (ibars, function (ibar, k) {
+   //clog ('bar', (k + 1), 'spines', ibar.length);
+   dale.do (ibar, function (notes, column) {
+      //if (k + 1 === 2) teishi.l ((k + 1) + ':' + (column + 1), notes);
+   });
 });
 
+var output = '', ligatures = dale.obj (LINENAMES, function (v) {return [v, false]});
+var appogiaturas = teishi.c (ligatures);
+
+// We take the spines and map them to the lines
 dale.do (bars, function (bar, barnumber) {
 
    var notes = dale.obj (LINENAMES, function (linename) {
       return [linename, []];
    });
 
+   // *v join two spines
+   // *^ split
+   // *- terminate
    var map = dale.stopNot (MAP, undefined, function (step, k) {
       if (! MAP [k + 1] || MAP [k + 1] [0] > (barnumber + 1)) return step [1];
    });
@@ -162,20 +208,23 @@ dale.do (bars, function (bar, barnumber) {
       var seen = {};
 
       dale.do (line, function (note, index) {
-         if (note.match (/\^/) && index) {
+         if (note.match (/\*\^/) && index) {
             map.splice (index, 0, map [index - 1]);
          }
-         if (note.match ('v')) {
+         if (note.match (/\*v/)) {
             if (! merge) merge = true;
-            else map.splice (index - 1, 1);
+            else {
+               map.splice (index - 1, 1);
+            }
          }
-         note = getnote ((barnumber + 1) + ':' + map [index], note, ligatures [map [index]]);
+         note = getnote ((barnumber + 1) + ':' + map [index], note, ligatures [map [index]], appogiaturas [map [index]]);
          if (note) {
             // only push one note per line
             if (seen [map [index]]) return clog ('skipping note', barnumber + 1, map [index], note);
             seen [map [index]] = true;
             notes [map [index]].push (note);
             ligatures [map [index]] = !! note.match ('L');
+            appogiaturas [map [index]] = !! note.match ('P') ? note : undefined;
          }
       });
    });
