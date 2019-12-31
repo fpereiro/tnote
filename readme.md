@@ -1,7 +1,5 @@
 # Vnote
 
-> "Y es música, música, siempre, sí." -- Norberto Napolitano
+Documentation available at [the project's homepage](https://fpereiro.github.io/vnote/).
 
-Main documentation available at [the project's homepage](https://fpereiro.github.io/vnote/).
-
-You can use the latest version of Vnote [here](https://fpereiro.github.io/vnote/vnote/vnote.html) (no installation required!).
+You can access the latest version of Vnote [here](https://fpereiro.github.io/vnote/vnote/vnote.html) (no installation required!).

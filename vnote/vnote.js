@@ -31,38 +31,38 @@ Please refer to readme.md to read the annotated source (but not yet!).
    V.parse = function (text) {
       var last = function (a) {return a [a.length - 1]}
       var piece = {sections: []};
-      dale.do (text.split ('\n'), function (line) {
-         if (! line.length) return;
-         if (line.match (/^START SECTION/)) return piece.sections.push ({lines: {}});
-         if (line.match (/^END SECTION/))   return;
+      dale.do (text.split ('\n'), function (voice) {
+         if (! voice.length) return;
+         if (voice.match (/^START SECTION/)) return piece.sections.push ({voices: {}});
+         if (voice.match (/^END SECTION/))   return;
          if (! piece.sections.length) {
-            line = line.split (/\s+/);
-            return piece [line [0]] = line.slice (1).join (' ');
+            voice = voice.split (/\s+/);
+            return piece [voice [0]] = voice.slice (1).join (' ');
          }
-         if (line.match (/^\s*[a-zA-Z]+/)) {
-            line = line.split (/\s+/);
-            var value = line.slice (1).join (' ');
+         if (voice.match (/^\s*[a-zA-Z]+/)) {
+            voice = voice.split (/\s+/);
+            var value = voice.slice (1).join (' ');
             if (value.match (/^\d/)) value = parseInt (value);
-            return last (piece.sections) [line [0]] = value;
+            return last (piece.sections) [voice [0]] = value;
          }
-         line = line.replace (/^\s*/, '').replace (/\s+$/, '').split (/\s+/);
+         voice = voice.replace (/^\s*/, '').replace (/\s+$/, '').split (/\s+/);
          var pushnote = function (b, l, n) {
-            var notes = piece.sections [piece.sections.length - 1].lines;
+            var notes = piece.sections [piece.sections.length - 1].voices;
             if (! notes [l]) notes [l] = [];
             if (! notes [l] [b]) notes [l] [b] = [];
             notes [l] [b].push (n);
          }
-         dale.do (line, function (v, k) {
+         dale.do (voice, function (v, k) {
             if (k < 2) return;
-            pushnote (line [0] - 1, line [1], v);
+            pushnote (voice [0] - 1, voice [1], v);
          });
       });
 
       // Add bars that are only rests.
       dale.do (piece.sections, function (section) {
-         dale.do (section.lines, function (line) {
-            dale.do (dale.times (line.length, 0), function (k) {
-               if (line [k] === undefined) line [k] = ['0*' + section.bpb];
+         dale.do (section.voices, function (voice) {
+            dale.do (dale.times (voice.length, 0), function (k) {
+               if (voice [k] === undefined) voice [k] = ['0*' + section.bpb];
             });
          });
       });
@@ -106,24 +106,24 @@ Please refer to readme.md to read the annotated source (but not yet!).
          return output;
       }
 
-      // We go through all the notes and convert them to the desired format. Lines will be now a flat array of notes (instead of having one array per bar.
+      // We go through all the notes and convert them to the desired format. Voices will be now a flat array of notes (instead of having one array per bar.
       dale.do (piece.sections, function (section) {
-         dale.do (section.lines, function (line, linename) {
-            var flatline = [];
-            dale.do (line, function (bar, k) {
+         dale.do (section.voices, function (voice, voicename) {
+            var flatvoice = [];
+            dale.do (voice, function (bar, k) {
                dale.do (bar, function (note) {
-                  flatline.push (parseNote (note));
+                  flatvoice.push (parseNote (note));
                });
             });
-            section.lines [linename] = flatline;
+            section.voices [voicename] = flatvoice;
          });
       });
 
-      // We go again through all the notes and add the following parameters to the object in the fourth position of each note: {offset: INTEGER (bars since the start), duration: integer (0 if the note is muted by a ligature, or the number of beats of the note if it is prolonged by a ligature), k: number of note in the line}
+      // We go again through all the notes and add the following parameters to the object in the fourth position of each note: {offset: INTEGER (bars since the start), duration: integer (0 if the note is muted by a ligature, or the number of beats of the note if it is prolonged by a ligature), k: number of note in the voice}
       dale.do (piece.sections, function (section) {
-         dale.do (section.lines, function (line) {
+         dale.do (section.voices, function (voice) {
             var offset = 0;
-            dale.do (line, function (note, k) {
+            dale.do (voice, function (note, k) {
                note [3].k = k;
                if (note [3].duration === undefined) note [3].duration = note [2];
                note [3].offset = offset;
@@ -131,8 +131,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
                if (Math.ceil  (offset) - offset < 0.02) offset = Math.ceil  (offset);
                if (offset - Math.floor (offset) < 0.02) offset = Math.floor (offset);
                // If this is the first note of a ligature, then mark the rest of the notes within the ligature.
-               if (note [3].ligature && (k === 0 || ! line [k - 1] [3].ligature)) {
-                  dale.stop (line.slice (k + 1), false, function (nextnote, k2) {
+               if (note [3].ligature && (k === 0 || ! voice [k - 1] [3].ligature)) {
+                  dale.stop (voice.slice (k + 1), false, function (nextnote, k2) {
                      // We extend the original note to a maximum of four beats.
                      note [3].duration     = Math.min (4, note [3].duration + nextnote [2]);
                      nextnote [3].duration = 0;
@@ -165,11 +165,11 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
       var init = Date.now () + 200;
 
-      var playnext = function (name, line, k, repeat) {
+      var playnext = function (name, voice, k, repeat) {
 
          setTimeout (function () {
 
-            var options = B.get ('State', 'play'), note = line [k];
+            var options = B.get ('State', 'play'), note = voice [k];
 
             if (! options.playing) return (document.getElementById (name + ':' + (k - 1)) || {}).className = '';
 
@@ -177,34 +177,34 @@ Please refer to readme.md to read the annotated source (but not yet!).
             if (! note || (options.end && note [3].offset >= options.end)) {
                (document.getElementById (name + ':' + (k - 1)) || {}).className = '';
                // We start playing the whole thing again.
-               return playnext (name, line, 0, repeat + 1);
+               return playnext (name, voice, 0, repeat + 1);
             }
 
             // If there's a note and its start is after options.start, we call the function again for the next note.
-            if (note && (options.start - 1) > note [3].offset) return playnext (name, line, k + 1, repeat);
+            if (note && (options.start - 1) > note [3].offset) return playnext (name, voice, k + 1, repeat);
 
             var offset = Date.now () - init - ((note [3].offset - (options.start - 1)) * 1000 * 60 / options.bpm * section.bpb);
             if (repeat) {
-               var end   = options.end || Math.round (line [line.length - 1] [3].offset + line [line.length - 1] [2] / section.bpb);
+               var end   = options.end || Math.round (voice [voice.length - 1] [3].offset + voice [voice.length - 1] [2] / section.bpb);
                var start = (options.start || 1) - 1;
 
                offset -= repeat * (end - start) * (1000 * 60 / options.bpm * section.bpb);
             }
 
             // We will play this note when the time comes, but not now.
-            if (offset < -3) return playnext (name, line, k, repeat);
+            if (offset < -3) return playnext (name, voice, k, repeat);
 
             document.getElementById (name + ':' + k).className = 'playing';
             V.playnote (note, options.bpm, options.muted [name] ? options.backgroundVolume : 1);
             if (k > 0) document.getElementById (name + ':' + (k - 1)).className = '';
 
-            playnext (name, line, k + 1, repeat);
+            playnext (name, voice, k + 1, repeat);
 
          }, 3);
       }
 
-      dale.do (section.lines, function (line, name) {
-         playnext (name, line, 0, 0);
+      dale.do (section.voices, function (voice, name) {
+         playnext (name, voice, 0, 0);
       });
    }
 
@@ -214,14 +214,14 @@ Please refer to readme.md to read the annotated source (but not yet!).
       var map  = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 'A', 11: 'B', 12: 'C'};
       var cmap = {0: 'black', 1: 'red', 2: 'orange', 3: 'yellow', 4: 'green', 5: 'blue', 6: 'indigo', 7: 'violet'}
 
-      var printlines = [], barsperline = window.innerWidth > 900 ? 2 : 1, width = window.innerWidth > 900 ? 100 : 50;
+      var printvoices = [], barspervoice = window.innerWidth > 900 ? 2 : 1, width = window.innerWidth > 900 ? 100 : 50;
 
-      dale.do (section.lines, function (line, name) {
-         dale.do (line, function (note) {
-            var k = Math.floor (note [3].offset / barsperline);
-            if (! printlines [k])        printlines [k] = {};
-            if (! printlines [k] [name]) printlines [k] [name] = [];
-            printlines [k] [name].push (note);
+      dale.do (section.voices, function (voice, name) {
+         dale.do (voice, function (note) {
+            var k = Math.floor (note [3].offset / barspervoice);
+            if (! printvoices [k])        printvoices [k] = {};
+            if (! printvoices [k] [name]) printvoices [k] [name] = [];
+            printvoices [k] [name].push (note);
             // Preload notes
             setTimeout (function () {
                V.playnote (note, B.get ('State', 'play', 'bpm'), undefined, true);
@@ -239,12 +239,12 @@ Please refer to readme.md to read the annotated source (but not yet!).
             }],
             ['li.label', {width: width * 0.5, color: 'black'}],
          ]],
-         dale.do (printlines, function (printline, k) {
+         dale.do (printvoices, function (printvoice, k) {
             return [
-               dale.do (printline, function (noteline, name) {
+               dale.do (printvoice, function (notevoice, name) {
                   return ['ul', [
                      ['li', {class: 'label', style: 'text-align: left'}, name],
-                     dale.do (noteline, function (note, i) {
+                     dale.do (notevoice, function (note, i) {
                         // This is a chord
                         if (type (note [1]) === 'array') {
                            var chord = note [1];
@@ -270,8 +270,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
                         }, ['onclick', 'click', 'note', note, name]), nname];
                      }),
                      (function () {
-                        if (dale.keys (printline) [0] !== name) return;
-                        var lastnote = printline [name] [printline [name].length - 1];
+                        if (dale.keys (printvoice) [0] !== name) return;
+                        var lastnote = printvoice [name] [printvoice [name].length - 1];
                         return ['li', {class: 'label', style: 'text-align: center'}, Math.round (lastnote [3].offset + lastnote [2] / section.bpb)];
                      }) (),
                      ['br'],
@@ -354,11 +354,11 @@ Please refer to readme.md to read the annotated source (but not yet!).
             c.ajax ('get', 'https://cdn.jsdelivr.net/gh/fpereiro/vnote@' + SHA + '/music/readme.md', {}, '', function (error, data) {
                if (error) return alert ('There was an error accessing the library.');
                var pieces = [];
-               dale.do (data.body.split ('\n'), function (line) {
-                  if (! line || line.match (/^#/)) return;
-                  line = line.split (':');
-                  var title = line [0];
-                  pieces.push ([title, line.join (':').replace (title + ': ', '')]);
+               dale.do (data.body.split ('\n'), function (voice) {
+                  if (! voice || voice.match (/^#/)) return;
+                  voice = voice.split (':');
+                  var title = voice [0];
+                  pieces.push ([title, voice.join (':').replace (title + ': ', '')]);
                });
                B.do ('set', ['Data', 'library'], pieces);
             });
@@ -416,14 +416,14 @@ Please refer to readme.md to read the annotated source (but not yet!).
             B.do ('set', ['State', 'play'], {
                section: B.get ('State', 'play', 'section') || 0,
                playing: false,
-               muted:   dale.obj (section.lines, function (v, k) {
+               muted:   dale.obj (section.voices, function (v, k) {
                   return [k, false];
                }),
                bpm:     section.bpm,
                start:   1,
                end:     (function () {
-                  var line = section.lines [dale.keys (section.lines) [0]];
-                  var note = line [line.length - 1];
+                  var voice = section.voices [dale.keys (section.voices) [0]];
+                  var note = voice [voice.length - 1];
                   return note [3].offset + note [2] / section.bpb;
                }) (),
                backgroundVolume: B.get ('State', 'play', 'backgroundVolume') || 0,
@@ -437,9 +437,9 @@ Please refer to readme.md to read the annotated source (but not yet!).
             var section = B.get ('Data', 'piece', 'sections', B.get ('State', 'play', 'section'));
             if (! section) return;
             // Preload notes if bpm changes.
-            dale.do (section.lines, function (line, name) {
+            dale.do (section.voices, function (voice, name) {
                if (B.get ('State', 'play', 'muted', name) && B.get ('State', 'play', 'backgroundVolume') === 0) return;
-               dale.do (line, function (note) {
+               dale.do (voice, function (note) {
                   setTimeout (function () {
                      V.playnote (note, B.get ('State', 'play', 'bpm'), undefined, true);
                   }, 1);
@@ -484,8 +484,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
                   ['input', B.ev ({style: 'width: 150px', class: 'play', readonly: play.playing, placeholder: 'backgroundVolume', value: play.backgroundVolume},   ['onchange', 'setfloat', ['State', 'play', 'backgroundVolume']])],
                ]],
                ['div', {class: 'float'}, [
-                  dale.do (play.muted, function (muted, line) {
-                     return [['label', line], ['input', B.ev ({type: 'checkbox', checked: ! muted}, ['onclick', 'set', ['State', 'play', 'muted', line], ! muted])]];
+                  dale.do (play.muted, function (muted, voice) {
+                     return [['label', voice], ['input', B.ev ({type: 'checkbox', checked: ! muted}, ['onclick', 'set', ['State', 'play', 'muted', voice], ! muted])]];
                   })
                ]],
             ];

@@ -1,10 +1,12 @@
 ## Vnote
 
+> "Y es música, música, siempre, sí." -- Norberto Napolitano
+
 Vnote is an alternative and experimental musical notation. It is based on the following principles:
 
 1. **Treat all twelve notes as equal citizens**: Vnote uses a single number to represent each of the twelve notes of the [octave](https://en.wikipedia.org/wiki/Equal_temperament). There is no concept of sharps or flats.
 2. **Use the graphical possibilities of the digital age**: the widespread availability of computers allows faithful reproduction of alternate graphical arrangements to express music. Vnote uses colors to represent octaves and line widths to express note durations.
-3. **Use the interactive possibilities of the digital age**: a digital music notation allows for interactivity, which can be an aid to learning and memorizing. Vnote allows reproduction of individual notes, note lines and entire pieces, to assist reading and to allow exploration.
+3. **Use the interactive possibilities of the digital age**: a digital music notation allows for interactivity, which can be an aid to learning and memorizing. Vnote allows reproduction of individual notes, voices and entire pieces, to assist reading and to allow exploration.
 4. **Share music through an open text based format**: Vnote stores music in an open source textual format called tnote, which is humanly readable and writable.
 5. **Stimulate the exploration of approaches to express music**: the standard musical notation is a refined, time-tested and indisputable tool for writing music. This project considers, however, that the time is ripe to explore alternatives and improvements to it. Vnote is a contribution to this latent potential.
 
@@ -22,7 +24,7 @@ Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian B
 
 ## Notational principles
 
-1. Notes are organized in lines. A line is a continuous sequence of notes belonging to a certain instrument. There can be more than one line per instrument simultaneously. Lines could also be called *voices*.
+1. Notes are organized in voices. A voice is a continuous sequence of notes belonging to a certain instrument. There can be more than one voice per instrument simultaneously.
 
 2. The [pitch class](https://en.wikipedia.org/wiki/Pitch_class) of a note is expressed as a number in the hexadecimal scale:
 
@@ -90,13 +92,13 @@ END SECTION
 
 `bpm` stands for *beats por minute*. `bpb` stands for *beats per bar*. If a bar contains four beats, then `bpb` will be 4.
 
-As for the `notes`, they are organized in `notelines`. A `noteline` lists all the notes belonging to a certain line and a certain bar. This is the basic structure:
+As for the `notes`, they are organized in `voices`. A `voice` lists all the notes belonging to a certain voice and a certain bar. This is the basic structure:
 
 ```
  NN name notes...
 ```
 
-`NN` stands for the bar number. `name` is the name of the line (for example, `rh1` if it's the first line of the right hand of a piano piece). Here's an example:
+`NN` stands for the bar number. `name` is the name of the voice (for example, `rh1` if it's the first voice of the right hand of a piano piece). Here's an example:
 
 ```
 1 rh2 0*3 41
@@ -123,7 +125,7 @@ As for the notes, this is how you write them:
 - A `F` indicates a fermata.
 - A `P` indicates an appogiatura.
 
-tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are: 1) notes on the same bar that start at the same time should be horizontally aligned; and 2) if there's no overlap between two notes in different lines, then the note that starts later should be pushed to the right until its starting line avoids intersection with the other note.
+tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are: 1) notes on the same bar that start at the same time should be horizontally aligned; and 2) if there's no overlap between two notes in different voices, then the note that starts later should be pushed to the right until its starting voice avoids intersection with the other note.
 
 ## Available music in tnote format
 
@@ -137,11 +139,9 @@ This is a good place to thank the [The Center for Computer Assisted Research in 
 
 ### Dodecaphonic solfège
 
-I love mental play (singing the notes of a melody or a harmony in my head) know and use the traditional solfège (do-re-mi-fa-sol-la-si), but it only has seven notes. The black keys have no names and singing "flat" or "sharp" breaks the stride of the solfège. This, over time, made me way less confident when playing music that uses lots of black keys, which sucks.
+I love mental play (singing the notes of a melody or a harmony in my head) know and use the traditional solfège (do-re-mi-fa-sol-la-si), but it only has seven notes. The black keys have no names and singing "flat" or "sharp" breaks the stride of the solfège. This, over time, made me way less confident when playing music that uses lots of black keys.
 
-So I assigned five sounds to the black keys.
-
-They are:
+So I assigned five sounds to the black keys. The sounds are nonsensical, but they are chosen to start with different letters than the traditional seven sounds. The five sounds are:
 
 - *jo* (for C sharp or D Flat)
 - *ka* (for D sharp or E flat)
@@ -151,10 +151,16 @@ They are:
 
 The entire dodecaphonic scale, in solfège, is then:
 
-**do jo re ka mi fa pe sol bu la te zi**
+**do jo re ka mi fa pe sol bu la te si**
 
-The sounds are nonsensical, but they are chosen to start with different letters than the traditional seven sounds. Notice also that *si* is pronounced *zi* to start with a different letter than *sol*.
+### Digital solfège
 
-An alternate idea I'm playing with is to sing the numbers from 1 to 12 instead of a nonsensical sound. This has the advantage that the mathematical relationship between notes starts to be immediately more clear and in the forefront of your mind. The disadvantage is that it's not so easy to pronounce numbers in a quick and unambiguous way (at least not in the languages I know).
+I'm experimenting also with singing the digitation of each voice, which could be called **digital solfège**. I have chosen to use the five vowels to represent the five fingers. Since I'm a native Spanish speaker, I choose the [Spanish sounds](https://en.wikipedia.org/wiki/Help:IPA/Spanish) for the vowels (`aeiou` in IPA).
 
-In English, I'm working with these sounds: "ua", "two", "tri", "fo", "fai", "si", "sev", "eit", "nai", "te", "il", "tue".
+- `a` corresponds to the thumb.
+- `e` corresponds to the index.
+- `i` corresponds to the middle finger.
+- `o` corresponds to the ring finger.
+- `u` corresponds to the little finger.
+
+To perform digital solfège, you singing the melody of the voice (using the right note values and durations) but using the vowel corresponding to the finger which plays the note. This is directly applicable to the piano or any instrument where each note is played with a determinate finger.

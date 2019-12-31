@@ -4,7 +4,7 @@ State.view
 State.play
    playing: true|false
    section: INTEGER
-   muted:   {LINENAME1: true|false, ...}
+   muted:   {VOICENAME1: true|false, ...}
    bpm:     INTEGER
    start:   INTEGER
    end:     INTEGER
@@ -18,8 +18,8 @@ Data.piece: {
       title: STRING
       bpm:   INTEGER
       bpb:   INTEGER
-      lines: {
-         LINENAME: [
+      voices: {
+         VOICENAME: [
             // Single note
             [octave, pitch, duration, {ligature: true|UNDEFINED, fermata: true|UNDEFINED, offset: INTEGER, duration: INTEGER, k: INTEGER}]
             // Chord
