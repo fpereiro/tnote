@@ -1,8 +1,3 @@
-## Internal structure
-
-
-
-
 ## Client Data/State structure
 
 State.view

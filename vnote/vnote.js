@@ -45,7 +45,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
             if (value.match (/^\d/)) value = parseInt (value);
             return last (piece.sections) [line [0]] = value;
          }
-         line = line.replace (/^\s*/, '').split (/\s+/);
+         line = line.replace (/^\s*/, '').replace (/\s+$/, '').split (/\s+/);
          var pushnote = function (b, l, n) {
             var notes = piece.sections [piece.sections.length - 1].lines;
             if (! notes [l]) notes [l] = [];
@@ -93,15 +93,16 @@ Please refer to readme.md to read the annotated source (but not yet!).
             }
          }
 
-         var duration = note.replace ('L', '').replace ('F', '').split (/[*\/]/);
+         var duration = note.replace ('L', '').replace ('F', '').replace ('P', '').split (/[*\/]/);
          if (duration.length === 1)      output [2] = 1;
          else if (duration.length === 3) output [2] = parseFloat (duration [1]) / parseFloat (duration [2]);
          else if (note.match (/\*/))     output [2] = parseFloat (duration [1]);
          else                            output [2] = 1 / parseFloat (duration [1]);
 
          output [3] = {};
-         if (note.match ('L')) output [3].ligature = true;
-         if (note.match ('F')) output [3].fermata  = true;
+         if (note.match ('L')) output [3].ligature    = true;
+         if (note.match ('F')) output [3].fermata     = true;
+         if (note.match ('P')) output [3].appogiatura = true;
          return output;
       }
 
@@ -109,7 +110,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
       dale.do (piece.sections, function (section) {
          dale.do (section.lines, function (line, linename) {
             var flatline = [];
-            dale.do (line, function (bar) {
+            dale.do (line, function (bar, k) {
                dale.do (bar, function (note) {
                   flatline.push (parseNote (note));
                });
@@ -260,6 +261,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
                         }
                         // This a single note.
                         else var nname = map [note [1]];
+                        if (note [3].fermata)     nname += 'F';
+                        if (note [3].appogiatura) nname += 'P';
 
                         return ['li', B.ev ({
                            id: name + ':' + note [3].k,

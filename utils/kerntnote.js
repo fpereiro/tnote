@@ -3,7 +3,11 @@ This script converts music from the kern format to the tnote format.
 
 It still requires manual intervention and cleanup. Its purpose is to take existing digitized kern pieces to produce pieces in tnote format.
 
-The input variables to the script are hardcoded in the script itself. They are DATA (the kern file), LINENAMES (the line names, in the order you want them printed) and MAP (which specifies how the columns in the kern file match to the lines in the tnote output).
+The input variables to the script are hardcoded in the script itself. They are:
+- DATA, the kern file.
+- LINENAMES, the line names, in the order you want them printed.
+- MAP, which specifies how the columns in the kern file match to the lines in the tnote output.
+- HEAD, an array of lines to be printed before the notes with information about the piece.
 
 Output is printed to the console. It can be caught by using the ">", like: node kerntnote > somepiece.txt
 
@@ -13,8 +17,8 @@ http://www.humdrum.org/rep/kern/
 http://www.humdrum.org/Humdrum/representations/kern.html#Humdrum%20Revisited
 */
 
-var dale   = require ('dale');
-var teishi = require ('teishi');
+var dale   = require ('../../dale');
+var teishi = require ('../../teishi');
 var fs     = require ('fs');
 
 var type = teishi.t, clog = console.log;
@@ -37,7 +41,7 @@ var MAP       = [[1, ['lh2', 'lh1', 'rh2', 'rh1']]];
 
 // BACH WTC 2 - PRELUDE 18
 // http://www.musedata.org/cgi-bin/mddata?composer=bach&edition=bg&genre=keybd/wtc-ii&work=0887&format=pdf&movement=01
-var DATA      = fs.readFileSync ('bach-wtc/kern/wtc2p18.krn', 'utf8');
+var DATA      = fs.readFileSync ('/media/veracrypt2/archive/lib/bach-wtc/kern/wtc2p18.krn', 'utf8');
 var LINENAMES = ['rh1', 'rh2', 'lh1', 'lh2'];
 var MAP       = [
    [1,  ['rh1', 'lh1', 'rh2', 'lh2']],
@@ -46,6 +50,19 @@ var MAP       = [
    [34, ['rh1', 'rh2', 'lh1', 'lh2']],
    [45, ['rh1', 'rh2', 'lh1', 'lh2']],
    [50, ['rh1', 'rh2', 'lh1', 'lh2']],
+];
+
+var HEAD = [
+   'author  Johann Sebastian Bach',
+   'title   The Well-Tempered Clavier - Book 2 - Prelude & Fugue XVIII - BVW 887',
+   'version 20190113',
+   'transcription by Federico Pereiro <fpereiro@gmail.com>',
+   '',
+   'START SECTION',
+   '',
+   'title Prelude XVIII',
+   'bpm   120',
+   'bpb   4',
 ];
 
 var getnote = function (where, s, prelig, appogiata) {
@@ -74,11 +91,11 @@ var getnote = function (where, s, prelig, appogiata) {
       appogiata = appogiata.replace ('L', '').replace ('F', '').replace ('P', '').split (/[*\/]/);
       if (appogiata.length === 1)      duration -= 1;
       else if (appogiata.length === 3) duration -= parseFloat (appogiata [1]) / parseFloat (appogiata [2]);
-      else if (apporig.match (/\*/)) duration -= parseFloat (appogiata [1]);
+      else if (apporig.match (/\*/))   duration -= parseFloat (appogiata [1]);
       else                             duration -= 1 / parseFloat (appogiata [1]);
    }
 
-   var fermata, ligclo;
+   var ligclo, alteration;
 
    var notes = dale.do (s.split (' '), function (v, k) {
       v = v.replace (/^\d+/, '');
@@ -90,9 +107,9 @@ var getnote = function (where, s, prelig, appogiata) {
       v = v.replace (/[x_]+/g, '');
       ligclo = ligclo || v [v.length - 1] === ']';
       v = v.replace (/]/, '');
-      fermata = fermata || v [0] === ';';
-      appogiatura = !! v.match ('P');
-      v = v.replace (/[;\/\\LJKkPpy)]/g, '');
+      alteration = v.match ('[PTtMmWw;]');
+      v = v.replace (/[;\/\\LJKkPpTtMmWwy)]/g, '');
+      // ; fermata
       // trill Tt go up multiple times (to the next note in the scale) and back again
       // mordent Mm go up once (1 or 2 semis) and back again
       // inverted mordent Ww go down once (1 or 2 semis) and back again
@@ -145,8 +162,7 @@ var getnote = function (where, s, prelig, appogiata) {
       output += {'0.5': '/2', '0.75': '*3/4', '0.25': '/4', '0.125': '/8', '1.5': '*3/2', '3.5': '*7/2'} [duration + ''];
    }
    if (! ligclo && lig) output += 'L';
-   if (fermata)         output += 'F';
-   if (appogiatura)     output += 'P';
+   if (alteration)      output += alteration [0];
 
    return output;
 }
@@ -305,11 +321,13 @@ dale.do (bars, function (bar, barnumber) {
    next ();
 
    dale.do (LINENAMES, function (linename) {
-      if (baroutput [linename]) output += '\n' + baroutput [linename];
+      if (baroutput [linename]) output += '\n' + baroutput [linename].replace (/\s*$/, '');
    });
 
    output += '\n';
 
 });
 
+clog (HEAD.join ('\n'));
 clog (output);
+clog ('END SECTION');

@@ -120,6 +120,8 @@ As for the notes, this is how you write them:
 - You can also multiply a note by a number. For example, for one and a half beats, you can write `41*1.5`.
 - You can also multiply by a fraction. For the same note as above, you can write `41*3/2`.
 - Finally, add a `L` if the note is ligated to the next one.
+- A `F` indicates a fermata.
+- A `P` indicates an appogiatura.
 
 tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are: 1) notes on the same bar that start at the same time should be horizontally aligned; and 2) if there's no overlap between two notes in different lines, then the note that starts later should be pushed to the right until its starting line avoids intersection with the other note.
 
