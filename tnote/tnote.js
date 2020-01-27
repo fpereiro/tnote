@@ -481,7 +481,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
    }
 
    Views.library = function () {
-      var SHA = '43fa54a82527a561635a84bcbdbdfad054848d18';
+      var SHA = '663fa88a8d9605edba244736e762348b85014e45';
       var routes = [
          ['retrieve', 'library', function () {
             c.ajax ('get', 'https://cdn.jsdelivr.net/gh/fpereiro/tnote@' + SHA + '/music/readme.md', {}, '', function (error, data) {
