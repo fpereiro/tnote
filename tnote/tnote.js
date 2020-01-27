@@ -23,7 +23,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
    c.ready (function () {
       B.mount ('body', Views.main ());
       setTimeout (function () {
-         B.do ('load', 'piece', B.get ('Data', 'library', 0, 1))
+         //B.do ('load', 'piece', B.get ('Data', 'library', 0, 1))
       }, 200);
    });
 
