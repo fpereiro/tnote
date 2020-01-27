@@ -1,26 +1,24 @@
-## Vnote
+## tnote
 
 > "Y es música, música, siempre, sí." -- Norberto Napolitano
 
-Vnote is an alternative and experimental musical notation. It is based on the following principles:
+tnote is an alternative and experimental musical notation. It is based on the following principles:
 
-1. **Treat all twelve notes as equal citizens**: Vnote uses a single number to represent each of the twelve notes of the [octave](https://en.wikipedia.org/wiki/Equal_temperament). There is no concept of sharps or flats.
-2. **Use the graphical possibilities of the digital age**: the widespread availability of computers allows faithful reproduction of alternate graphical arrangements to express music. Vnote uses colors to represent octaves and line widths to express note durations.
-3. **Use the interactive possibilities of the digital age**: a digital music notation allows for interactivity, which can be an aid to learning and memorizing. Vnote allows reproduction of individual notes, voices and entire pieces, to assist reading and to allow exploration.
-4. **Share music through an open text based format**: Vnote stores music in an open source textual format called tnote, which is humanly readable and writable.
-5. **Stimulate the exploration of approaches to express music**: the standard musical notation is a refined, time-tested and indisputable tool for writing music. This project considers, however, that the time is ripe to explore alternatives and improvements to it. Vnote is a contribution to this latent potential.
+1. **Use a text format to represent music**: tnote uses an open text format to represent and transmit music. The format is humanly readable and writable; it is also easily parseable by computers, facilitating both analysis and artistic creation with the help of computers.
+2. **Treat all twelve notes as equal citizens**: tnote uses a single number to represent each of the twelve notes of the [octave](https://en.wikipedia.org/wiki/Equal_temperament). There is no concept of sharps or flats.
+3. **Use the graphical possibilities of the digital age**: the widespread availability of computers allows faithful reproduction of alternate graphical arrangements to express music. While tnote is textual, it uses colors and levels of scales to make the music more readable and memorable.
+4. **Use the interactive possibilities of the digital age**: a digital music notation allows for interactivity, which can be an aid to learning and memorizing. The tnote interface allows reproduction of individual notes, voices and entire pieces, to assist reading and to allow exploration.
+5. **Stimulate the exploration of approaches to express music**: the standard musical notation is a refined, time-tested and indisputable tool for writing music. This project considers, however, that the time is ripe to explore alternatives and improvements to it. tnote is a contribution to this latent potential.
 
-## Using Vnote
+## Using tnote
 
-Vnote runs on any modern browser and requires no installation. You can find the latest version [here](https://fpereiro.github.io/vnote/vnote/vnote.html).
+tnote runs on any modern browser and requires no installation. You can find the latest version [here](https://fpereiro.github.io/tnote/tnote/tnote.html).
 
-Vnote uses Keith Horwood's amazing [audiosynth library](https://github.com/keithwhor/audiosynth) to generate the synthetized piano sounds.
+tnote uses Keith Horwood's amazing [audiosynth library](https://github.com/keithwhor/audiosynth) to generate the synthetized piano sounds.
 
 ## Demo
 
-Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian Bach's Well Tempered Clavier (book 1).
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/qUx6OlXBT94" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+To be uploaded.
 
 ## Notational principles
 
@@ -43,25 +41,25 @@ Here's a video of Vnote reproducing the first Fugue in C from Johann Sebastian B
 
    The stop is represented by the number `0`.
 
-3. The octave of the note is expressed as a color:
+3. The octave of the note is expressed as either a number or a color (or both):
 
-   - The first octave is represented by the color red.
-   - The second octave is represented by the color orange.
-   - The third octave is represented by the color yellow.
-   - The fourth octave is represented by the color green.
-   - The fifth octave is represented by the color blue.
-   - The sixth octave is represented by the color indigo.
-   - The seventh octave is represented by the color violet.
+   - The first octave is represented by either `1` or the color red.
+   - The second octave is represented by either `2` or the color orange.
+   - The third octave is represented by either `3` or the color yellow.
+   - The fourth octave is represented by either `4` or the color green.
+   - The fifth octave is represented by either `5` or the color blue.
+   - The sixth octave is represented by either `6` or the color indigo.
+   - The seventh octave is represented by either `7` or the color violet.
 
    The octave starts at the pitch class 1 (C). For example, [A440](https://en.wikipedia.org/wiki/A440_(pitch_standard)) belongs to octave 4.
 
-4. The [value](https://en.wikipedia.org/wiki/Note_value) (duration) of the note is expressed by its width.
+4. The [value](https://en.wikipedia.org/wiki/Note_value) (duration) of the note is expressed by either a fraction or a multiplier.
 
 5. Chords are expressed as a single note segment with the note numbers being written in succession, from the lowest to the highest. The octave color of the segment belongs to that of the *lower* note.
 
-## The tnote format
+## The tnote file format
 
-Vnote uses a text format to store and share music, called *tnote*. tnote is designed to be easy to write and moderately readable, while being very compact. This is how a tnote file looks like:
+tnote is designed to be easy to write and moderately readable, while being very compact. This is how a tnote file looks like:
 
 ```
 author  Johann Sebastian Bach
@@ -124,18 +122,15 @@ As for the notes, this is how you write them:
 - Finally, add a `L` if the note is ligated to the next one.
 - A `F` indicates a fermata.
 - A `P` indicates an appogiatura.
+- To mark fingerings, you can use lowercase vowels `aeiou` either preceding or following each note.
 
-tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are: 1) notes on the same bar that start at the same time should be horizontally aligned; and 2) if there's no overlap between two notes in different voices, then the note that starts later should be pushed to the right until its starting voice avoids intersection with the other note.
+tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are: 1) notes on the same bar that start at the same time should be horizontally aligned; and 2) if there's no overlap between two notes in different voices, then the note that starts later should be pushed to the right until its starting voice avoids intersection with the other note. In other words: *notes from different voices that are aligned start at the same time; and notes from different voices that overlap graphically must also overlap in sound.*
 
 ## Available music in tnote format
 
-Go [here](https://github.com/fpereiro/vnote/tree/master/music) to see a list of available pieces.
+[List of available pieces](https://github.com/fpereiro/tnote/tree/master/music).
 
-I am currently working on a [script](https://github.com/fpereiro/vnote/blob/master/utils/kerntnote.js) to convert pieces into tnote from the [wonderful Humdrum music repository](https://github.com/humdrum-tools/humdrum-data), which contains hundreds of pieces in a format named *kern*. This holds the promise of creating a corpus of tnote pieces while avoiding hand transcription (though proofreading will probably still be needed).
-
-This is a good place to thank the [The Center for Computer Assisted Research in the Humanities](https://ccrma.stanford.edu/CCRMA/newOverview/assisted.html) for making digitized transcriptions of music readily available.
-
-## Notes on learning music using Vnote
+## Notes on learning music using tnote
 
 ### Dodecaphonic solfège
 

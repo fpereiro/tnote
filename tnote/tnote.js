@@ -1,5 +1,5 @@
 /*
-vnote - v1.0.0
+tnote - v1.0.0
 
 Written by Federico Pereiro (fpereiro@gmail.com) and released into the public domain.
 
@@ -22,13 +22,16 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
    c.ready (function () {
       B.mount ('body', Views.main ());
+      setTimeout (function () {
+         B.do ('load', 'piece', B.get ('Data', 'library', 0, 1))
+      }, 200);
    });
 
-   // *** VNOTE OBJECT ***
+   // *** TNOTE OBJECT ***
 
-   var V = window.V = {};
+   var T = window.T = {};
 
-   V.parse = function (text) {
+   T.parse = function (text) {
       var last = function (a) {return a [a.length - 1]}
       var piece = {sections: []};
       dale.do (text.split ('\n'), function (voice) {
@@ -67,7 +70,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
          });
       });
 
-      // We parse the notes into a format [octave, pitch, duration, {ligature: true|undefined, fermata: true|undefined}].
+      // We parse the notes into a format [octave, pitch, duration, {ligature: true|undefined, fermata: true|undefined, fingering: STRING|undefined}].
       // If it's a chord, instead it will look like [undefined, [[octave, pitch], [octave, pitch], ...], duration, {...}]
       var parseNote = function (note) {
          var output = [];
@@ -76,6 +79,11 @@ Please refer to readme.md to read the annotated source (but not yet!).
             output [1] = 0;
          }
          else {
+            var fingering;
+            if (note.match (/[aeiou]+/)) {
+               fingering = note.match (/[aeiou]+/) [0];
+               note.replace (/[aeiou]/g, '');
+            }
             var octave = parseInt (note [0]);
             var pitch  = note.replace (octave + '', '').match (/[0-9A-C+]+/) [0];
             if (pitch.length === 1) {
@@ -103,6 +111,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
          if (note.match ('L')) output [3].ligature    = true;
          if (note.match ('F')) output [3].fermata     = true;
          if (note.match ('P')) output [3].appogiatura = true;
+         if (fingering)        output [3].fingering   = fingering;
          return output;
       }
 
@@ -145,7 +154,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
       return piece;
    }
 
-   V.playnote = function (note, bpm, volume, mute) {
+   T.playnote = function (note, bpm, volume, mute) {
       // If silent or ligated note, ignore the note.
       if (note [1] === 0 || note [3].duration === 0 || volume === 0) return;
 
@@ -159,7 +168,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
       });
    }
 
-   V.play = function () {
+   T.play = function () {
 
       var section = B.get ('Data', 'piece', 'sections', B.get ('State', 'play', 'section'));
 
@@ -195,7 +204,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
             if (offset < -3) return playnext (name, voice, k, repeat);
 
             document.getElementById (name + ':' + k).className = 'playing';
-            V.playnote (note, options.bpm, options.muted [name] ? options.backgroundVolume : 1);
+            T.playnote (note, options.bpm, options.muted [name] ? options.backgroundVolume : 1);
             if (k > 0) document.getElementById (name + ':' + (k - 1)).className = '';
 
             playnext (name, voice, k + 1, repeat);
@@ -208,7 +217,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
       });
    }
 
-   V.draw = function () {
+   T.draw = function () {
       var section = B.get ('Data', 'piece', 'sections', B.get ('State', 'play', 'section'));
 
       var map  = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 'A', 11: 'B', 12: 'C'};
@@ -224,7 +233,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
             printvoices [k] [name].push (note);
             // Preload notes
             setTimeout (function () {
-               V.playnote (note, B.get ('State', 'play', 'bpm'), undefined, true);
+               T.playnote (note, B.get ('State', 'play', 'bpm'), undefined, true);
             }, 1);
          });
       });
@@ -263,6 +272,130 @@ Please refer to readme.md to read the annotated source (but not yet!).
                         else var nname = map [note [1]];
                         if (note [3].fermata)     nname += 'F';
                         if (note [3].appogiatura) nname += 'P';
+
+                        return ['li', B.ev ({
+                           id: name + ':' + note [3].k,
+                           style: (note [0] === 2 || note [0] === 3 ? 'color: black;' : '') + (note [3].duration === 0 ? 'border-left: solid 3px red;' : '') + 'cursor: pointer; width: ' + (note [2] * width) + 'px; background-color: ' + cmap [note [0] || 0]
+                        }, ['onclick', 'click', 'note', note, name]), nname];
+                     }),
+                     (function () {
+                        if (dale.keys (printvoice) [0] !== name) return;
+                        var lastnote = printvoice [name] [printvoice [name].length - 1];
+                        return ['li', {class: 'label', style: 'text-align: center'}, Math.round (lastnote [3].offset + lastnote [2] / section.bpb)];
+                     }) (),
+                     ['br'],
+                  ]];
+               }),
+               ['br'],
+            ];
+         }),
+      ];
+   }
+
+   T.drawNew = function () {
+      var section = B.get ('Data', 'piece', 'sections', B.get ('State', 'play', 'section'));
+
+      var map  = {0: 0, 1: 1, 2: 2, 3: 3, 4: 4, 5: 5, 6: 6, 7: 7, 8: 8, 9: 9, 10: 'A', 11: 'B', 12: 'C'};
+      var cmap = {0: 'black', 1: 'red', 2: 'orange', 3: 'yellow', 4: 'green', 5: 'blue', 6: 'indigo', 7: 'violet'}
+
+      var printvoices = [], barspervoice = 1, width = window.innerWidth > 900 ? 100 : 50;
+
+      dale.do (section.voices, function (voice, name) {
+         dale.do (voice, function (note) {
+            var k = Math.floor (note [3].offset / barspervoice);
+            if (! printvoices [k])        printvoices [k] = {};
+            if (! printvoices [k] [name]) printvoices [k] [name] = [];
+            printvoices [k] [name].push (note);
+            // Preload notes
+            setTimeout (function () {
+               T.playnote (note, B.get ('State', 'play', 'bpm'), undefined, true);
+            }, 1);
+         });
+      });
+
+      return [
+         ['style', [
+            ['div.bars', {
+               'padding-left': 20,
+            }],
+            ['span.full', {'font-size': 36}],
+            ['span.time', {'font-size': 18, 'padding-top': 18}],
+            ['span.pad', {opacity: '0'}],
+            ['span', {
+               float: 'left',
+               'font-family': '\'Kulim Park\', serif',
+               'font-family': '\'Inria Serif\', serif',
+            }],
+            ['span.clear', {clear: 'both'}],
+            dale.do (cmap, function (v, k) {
+               return ['span.' + v, {color: v}];
+            }),
+            //['span.octave', {display: 'none'}],
+            ['span.digi', {display: 'none'}],
+         ]],
+         ['div', {class: 'bars'}, [
+            ['span', {class: 'full'}, 0],
+            ['span', {class: 'time'}, '/2'],
+            ['span', {class: 'pad'}, 0],
+            ['span', {class: 'pad'}, 0],
+            ['span', {class: 'full digi'}, 'a'],
+            ['span', {class: 'full green octave'}, 4],
+            ['span', {class: 'full green'}, 8],
+            ['span', {class: 'time'}, '/4'],
+            ['span', {class: 'pad'}, 0],
+            ['span', {class: 'full digi'}, 'c'],
+            ['span', {class: 'full blue octave'}, 5],
+            ['span', {class: 'full blue'}, 1],
+            ['span', {class: 'time'}, '/4'],
+            ['span', {class: 'clear'}],
+            ['span', {class: 'full'}, 0],
+            ['span', {class: 'time'}, '/4'],
+            ['span', {class: 'pad'}, 0],
+            ['span', {class: 'full green octave'}, 4],
+            ['span', {class: 'full green'}, 5],
+            ['span', {class: 'time'}, '3/4'],
+         ]],
+      ];
+
+      return [
+         ['style', [
+            ['div.bars', {
+               'padding-left': 15,
+               'background-size': width + 'px',
+               'background-position': 15 + (width * 0.5) + 'px',
+               'background-image': 'linear-gradient(to right, #222222 1px, transparent 1px)',
+            }],
+            ['li.label', {width: width * 0.5, color: 'black'}],
+         ]],
+         dale.do (printvoices, function (printvoice, k) {
+            return [
+               dale.do (printvoice, function (notevoice, name) {
+                  return ['ul', [
+                     ['li', {class: 'label', style: 'text-align: left'}, name],
+                     dale.do (notevoice, function (note, i) {
+                        // This is a chord
+                        if (type (note [1]) === 'array') {
+                           var chord = note [1];
+                           var octave = note [0] = note [1] [0] [0];
+                           var nname = dale.do (chord, function (cnote, k) {
+                              if (k === 0 || octave === cnote [0]) return map [cnote [1]];
+                              octave
+                              var pluses = cnote [0] - octave - (cnote [1] <= chord [k - 1] [1] ? 1 : 0);
+                              var output = dale.do (dale.times (pluses), function () {return '+'}).join ('');
+                              output += map [cnote [1]];
+                              octave = cnote [0];
+                              return output;
+                           }).join ('');
+                        }
+                        // This a single note.
+                        else var nname = map [note [1]];
+                        if (note [3].fermata)     nname += 'F';
+                        if (note [3].appogiatura) nname += 'P';
+
+                        return ['li', B.ev ({
+                           id: name + ':' + note [3].k,
+                           style: 'cursor: pointer; width: ' + (note [2] * width) + 'px; color: black;',
+                        }, ['onclick', 'click', 'note', note, name]), nname];
 
                         return ['li', B.ev ({
                            id: name + ':' + note [3].k,
@@ -351,7 +484,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
       var SHA = '43fa54a82527a561635a84bcbdbdfad054848d18';
       var routes = [
          ['retrieve', 'library', function () {
-            c.ajax ('get', 'https://cdn.jsdelivr.net/gh/fpereiro/vnote@' + SHA + '/music/readme.md', {}, '', function (error, data) {
+            c.ajax ('get', 'https://cdn.jsdelivr.net/gh/fpereiro/tnote@' + SHA + '/music/readme.md', {}, '', function (error, data) {
                if (error) return alert ('There was an error accessing the library.');
                var pieces = [];
                dale.do (data.body.split ('\n'), function (voice) {
@@ -366,7 +499,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
          ['load', 'piece', function (x, link) {
             c.ajax ('get', link, {}, '', function (error, data) {
                if (error) return alert ('There was an error accessing the library.');
-               B.do ('set', ['Data', 'piece'], V.parse (data.body));
+               B.do ('set', ['Data', 'piece'], T.parse (data.body));
                B.do ('set', ['State', 'view'], 'play');
             });
          }],
@@ -376,7 +509,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
             var reader = new FileReader ();
             reader.readAsText (file, 'UTF-8');
             reader.onload = function (e) {
-               B.do ('set', ['Data', 'piece'], V.parse (e.target.result));
+               B.do ('set', ['Data', 'piece'], T.parse (e.target.result));
                B.do ('set', ['State', 'view'], 'play');
             }
             reader.onerror = function () {
@@ -389,7 +522,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
          B.do ('rem', 'State', 'play');
       }}, function (x, library) {
          return ['div', {style: 'padding-left: 20px;'}, [
-            ['h2', ['Tnote Library (', ['a', {target: '_blank', href: 'https://github.com/fpereiro/vnote/tree/' + SHA + '/music/readme.md'}, 'link'], ')']],
+            ['h2', ['Tnote Library (', ['a', {target: '_blank', href: 'https://github.com/fpereiro/tnote/tree/' + SHA + '/music/readme.md'}, 'link'], ')']],
             dale.do (library, function (piece) {
                return [
                   ['span', B.ev ({class: 'action'}, ['onclick', 'load', 'piece', piece [1]]), piece [0]],
@@ -400,7 +533,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
             ['br'],
             ['h4', ['Or load file from your computer: ', ['input', B.ev ({value: 'Choose file', id: 'piecefile', type: 'file'}, ['onchange', 'load', 'piecefile'])]]],
             ['br'],
-            ['h4', {style: 'position: absolute; top: 0; right: 30px'}, ['a', {target: '_blank', href: 'https://fpereiro.github.io/vnote'}, 'Vnote project home']],
+            ['h4', {style: 'position: absolute; top: 0; right: 30px'}, ['a', {target: '_blank', href: 'https://fpereiro.github.io/tnote'}, 'tnote project home']],
          ]];
       });
    }
@@ -408,7 +541,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
    Views.play = function () {
       var routes = [
          ['click', 'note', function (x, note) {
-            V.playnote (note, B.get ('State', 'play', 'bpm'));
+            T.playnote (note, B.get ('State', 'play', 'bpm'));
          }],
          ['make', 'play', function () {
             var piece   = B.get ('Data', 'piece');
@@ -431,7 +564,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
             B.do ('change', ['State', 'play', 'section']);
          }],
          ['change', ['State', 'play', 'playing'], function () {
-            if (B.get ('State', 'play', 'playing')) V.play ();
+            if (B.get ('State', 'play', 'playing')) T.play ();
          }],
          ['change', ['State', 'play', 'bpm'], function () {
             var section = B.get ('Data', 'piece', 'sections', B.get ('State', 'play', 'section'));
@@ -441,7 +574,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
                if (B.get ('State', 'play', 'muted', name) && B.get ('State', 'play', 'backgroundVolume') === 0) return;
                dale.do (voice, function (note) {
                   setTimeout (function () {
-                     V.playnote (note, B.get ('State', 'play', 'bpm'), undefined, true);
+                     T.playnote (note, B.get ('State', 'play', 'bpm'), undefined, true);
                   }, 1);
                });
             });
@@ -498,7 +631,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
          ]],
          B.view (['State', 'play', 'section'], {attrs: {class: 'bars'}}, function (x, section) {
             if (section === undefined) return;
-            return V.draw ();
+            return T.draw ();
          }),
       ];
    }
