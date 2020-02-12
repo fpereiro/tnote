@@ -2,19 +2,19 @@
 
 > "Y es música, música, siempre, sí." -- Norberto Napolitano
 
-tnote is an alternative and experimental musical notation. It is based on the following principles:
+tnote is an experimental musical notation. It is based on the following principles:
 
 1. **Use a text format to represent music**: tnote uses an open text format to represent and transmit music. The format is humanly readable and writable; it is also easily parseable by computers, facilitating both analysis and artistic creation with the help of computers.
 2. **Treat all twelve notes as equal citizens**: tnote uses a single number to represent each of the twelve notes of the [octave](https://en.wikipedia.org/wiki/Equal_temperament). There is no concept of sharps or flats.
-3. **Use the graphical possibilities of the digital age**: the widespread availability of computers allows faithful reproduction of alternate graphical arrangements to express music. While tnote is textual, it uses colors and levels of scales to make the music more readable and memorable.
+3. **Use the graphical possibilities of the digital age**: the widespread availability of computers allows faithful reproduction of alternate graphical arrangements to express music. While tnote is textual, it uses colors and levels of scale to make the music more readable and memorable.
 4. **Use the interactive possibilities of the digital age**: a digital music notation allows for interactivity, which can be an aid to learning and memorizing. The tnote interface allows reproduction of individual notes, voices and entire pieces, to assist reading and to allow exploration.
-5. **Stimulate the exploration of approaches to express music**: the standard musical notation is a refined, time-tested and indisputable tool for writing music. This project considers, however, that the time is ripe to explore alternatives and improvements to it. tnote is a contribution to this latent potential.
+5. **Stimulate the exploration of novel approaches to notate music**: the standard musical notation is a refined, time-tested and indisputable tool for reading and writing music. This project considers, however, that the time is ripe to explore alternatives and improvements to it. tnote is a contribution to this latent potential.
 
 ## Using tnote
 
 tnote runs on any modern browser and requires no installation. You can find the latest version [here](https://fpereiro.github.io/tnote/tnote/tnote.html).
 
-tnote uses Keith Horwood's amazing [audiosynth library](https://github.com/keithwhor/audiosynth) to generate the synthetized piano sounds.
+tnote uses Keith Horwood's amazing [audiosynth library](https://github.com/keithwhor/audiosynth) to generate synthetized piano sounds.
 
 ## Demo
 
@@ -93,24 +93,25 @@ END SECTION
 As for the `notes`, they are organized in `voices`. A `voice` lists all the notes belonging to a certain voice and a certain bar. This is the basic structure:
 
 ```
- NN name notes...
+ NN NAME notes...
 ```
 
-`NN` stands for the bar number. `name` is the name of the voice (for example, `rh1` if it's the first voice of the right hand of a piano piece). Here's an example:
+`NN` stands for the bar number. `NAME` is the name of the voice (for example, `R1` if it's the first voice of the right hand of a piano piece). Here's an example:
 
 ```
-1 rh2 0*3 41
+1 R2 0*3 41
 ```
 
 Notes are separated by spaces. Multiple spaces can be used to align the notes in a more readable way. Here's an example of an entire bar.
 
 ```
- 4 rh  0/2       4C9/2     4C9/2     52B/2     0/2       4C9/2     4C9/2     4B8/2
- 4 lh  39/4 44/4 39/4 44/4 38/4 44/4 38/4 44/4 39/4 44/4 39/4 44/4 34/4 44/4 34/4 44/4
+ 4 R  0/2       4C9/2     4C9/2     52B/2     0/2       4C9/2     4C9/2     4B8/2
+ 4 L  39/4 44/4 39/4 44/4 38/4 44/4 38/4 44/4 39/4 44/4 39/4 44/4 34/4 44/4 34/4 44/4
 ```
 
 As for the notes, this is how you write them:
 
+- To mark fingerings, you can use lowercase vowels `aeiou` preceding each note.
 - Start with the octave, which is a number between 1 and 7.
 - Immediately after, place the pitch class of the note, which is 1-9 or A, B or C. For example, C4 would be written 41; and G5 would be written 58; while B3 would be written 3C.
 - If the note is a rest, you write `0` and don't add an octave.
@@ -119,12 +120,14 @@ As for the notes, this is how you write them:
 - If the note is a multiple of a beat, you'd write `41*2` (for twice a beat), `41*4` (for four times a beat), etc.
 - You can also multiply a note by a number. For example, for one and a half beats, you can write `41*1.5`.
 - You can also multiply by a fraction. For the same note as above, you can write `41*3/2`.
-- Finally, add a `L` if the note is ligated to the next one.
-- A `F` indicates a fermata.
-- A `P` indicates an appogiatura.
-- To mark fingerings, you can use lowercase vowels `aeiou` either preceding or following each note.
+- Finally, there are a few capital letters to indicate certain modifications to the note:
+   - `L` indicates this note is [ligated](https://en.wikipedia.org/wiki/Ligature_(music)) to the next one.
+   - `F` indicates a [fermata](https://en.wikipedia.org/wiki/Fermata).
+   - `P` indicates an [appogiatura](https://en.wikipedia.org/wiki/Appoggiatura).
+   - `M` indicates a [mordent](https://en.wikipedia.org/wiki/Mordent).
+   - `T` indicates a [trill](https://en.wikipedia.org/wiki/Trill_(music)).
 
-tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are: 1) notes on the same bar that start at the same time should be horizontally aligned; and 2) if there's no overlap between two notes in different voices, then the note that starts later should be pushed to the right until its starting voice avoids intersection with the other note. In other words: *notes from different voices that are aligned start at the same time; and notes from different voices that overlap graphically must also overlap in sound.*
+tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are: 1) notes on the same bar that are on different voices and start at the same time should be horizontally aligned; and 2) if there's no overlap between two notes in different voices, then the note that starts later should be pushed to the right until its starting voice avoids overlap with the other note. In other words: *notes from different voices that are aligned start at the same time; and notes from different voices that overlap graphically must also overlap in sound.* For rule #1, the reverse is also true: if two notes start at the same time, they should be aligned; but for rule #2, it is possible for two notes that overlap in time to not overlap in space; however the converse cannot be true.
 
 ## Available music in tnote format
 

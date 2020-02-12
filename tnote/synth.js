@@ -79,7 +79,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
       }
    }
 
-   // note.note 0-12, octave is 1 to 7, duration is in seconds
+   // note.note 0-12, note.octave is 1 to 7, note.duration is in seconds
    Synth.createSound = function (note, instrument, options, raw) {
 
       options = dale.obj (options || {}, teishi.c (Synth.config), function (v, k) {return [k, v]});
