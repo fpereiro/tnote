@@ -93,13 +93,13 @@ END SECTION
 As for the `notes`, they are organized in `voices`. A `voice` lists all the notes belonging to a certain voice and a certain bar. This is the basic structure:
 
 ```
- NN NAME notes...
+ NN NAME  notes...
 ```
 
 `NN` stands for the bar number. `NAME` is the name of the voice (for example, `R1` if it's the first voice of the right hand of a piano piece). Here's an example:
 
 ```
-1 R2 0*3 41
+1 R2  0*3 41
 ```
 
 Notes are separated by spaces. Multiple spaces can be used to align the notes in a more readable way. Here's an example of an entire bar.
