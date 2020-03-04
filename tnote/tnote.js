@@ -100,7 +100,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
             }
          }
 
-         var tduration = note.replace ('L', '').replace ('F', '').replace ('P', '');
+         var tduration = note.replace (/[FLPTM]+/g, '');
          var duration = tduration.split (/[*\/]/);
          if (duration.length === 1)      output [2] = 1;
          else if (duration.length === 3) output [2] = parseFloat (duration [1]) / parseFloat (duration [2]);
@@ -111,6 +111,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
          if (note.match ('F')) output [3].fermata     = true;
          if (note.match ('P')) output [3].appogiatura = true;
          if (note.match ('L')) output [3].ligature    = true;
+         if (note.match ('T')) output [3].trill       = true;
+         if (note.match ('M')) output [3].mordent     = true;
          if (fingering)        output [3].fingering   = fingering;
          return output;
       }
@@ -263,6 +265,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
 
          if (note [3].fermata)     notes += 'F';
          if (note [3].appogiatura) notes += 'P';
+         if (note [3].mordent)     notes += 'M';
+         if (note [3].trill)       notes += 'T';
 
          return ['li', B.ev ({class: 'note' + (note [3].duration === 0 ? ' ligature' : ''), id: voiceName + ':' + note [3].k}, ['onclick', 'click', 'note', note, name]), [
             B.get ('State', 'show', 'fin') ? ['span', {class: 'fingering'}, note [3].fingering] : [],
