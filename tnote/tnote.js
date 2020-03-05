@@ -79,8 +79,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
          }
          else {
             var fingering;
-            if (note.match (/[aeiou]+/)) {
-               fingering = note.match (/[aeiou]+/) [0];
+            if (note.match (/[a-z]+/)) {
+               fingering = note.match (/[a-z]+/) [0];
                note = note.replace (fingering, '');
             }
             var octave = parseInt (note [0]);
@@ -550,6 +550,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
             dale.do (library, function (piece) {
                return [
                   ['span', B.ev ({class: 'action'}, ['onclick', 'load', 'piecelink', piece [1]]), piece [0]],
+                  ['span', {style: 'width: 20px; display: inline-block'}, ' '],
+                  ['span', B.ev ({class: 'action'}, ['onclick', 'load', 'piecelink', piece [1].replace ('.txt', '_fin.txt')]), '(fingered)'],
                   ['br'],
                   ['br'],
                ];

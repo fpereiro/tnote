@@ -111,7 +111,7 @@ Notes are separated by spaces. Multiple spaces can be used to align the notes in
 
 As for the notes, this is how you write them:
 
-- To mark fingerings, you can use lowercase vowels `aeiou` preceding each note.
+- To mark fingerings, you can use lowercase letters (`a-z`) preceding each note.
 - Start with the octave, which is a number between 1 and 7.
 - Immediately after, place the pitch class of the note, which is 1-9 or A, B or C. For example, C4 would be written 41; and G5 would be written 58; while B3 would be written 3C.
 - If the note is a rest, you write `0` and don't add an octave.
