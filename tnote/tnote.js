@@ -269,7 +269,10 @@ Please refer to readme.md to read the annotated source (but not yet!).
          if (note [3].trill)       notes += 'T';
 
          return ['li', B.ev ({class: 'note' + (note [3].duration === 0 ? ' ligature' : ''), id: voiceName + ':' + note [3].k}, ['onclick', 'click', 'note', note, name]), [
-            B.get ('State', 'show', 'fin') ? ['span', {class: 'fingering'}, note [3].fingering] : [],
+            B.get ('State', 'show', 'fin') ? ['span', {class: 'fingering'}, dale.do ((note [3].fingering || '').split (''), function (v) {
+               var colors = {a: 'green', i: 'green', u: 'green', e: 'red', o: 'red'};
+               return ['span', {style: 'font-weight: bold; color: ' + (colors [v] || 'black')}, v];
+            })] : [],
             B.get ('State', 'show', 'oct') ? ['span', {class: 'octave', style: 'color: ' + cmap [note [0] || 0]}, note [0] || ''] : [],
             ['span', {class: 'pitch', style: 'color: ' + (B.get ('State', 'show', 'oct') ? 'black' : cmap [note [0] || 0])}, nname],
             B.get ('State', 'show', 'dur') ? ['span', {class: 'duration'}, note [3] ['textual-duration']] : [],
