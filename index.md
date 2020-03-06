@@ -2,17 +2,17 @@
 
 > "Y es música, música, siempre, sí." -- Norberto Napolitano
 
-tnote is an experimental musical notation. It is based on the following principles:
+tnote is a textual musical notation. It is based on the following principles:
 
-1. **Use a text format to represent music**: tnote uses an open text format to represent and transmit music. The format is humanly readable and writable; it is also easily parseable by computers, facilitating both analysis and artistic creation with the help of computers.
+1. **Use text to represent music**: tnote uses an open text format to represent and transmit music. The format is humanly readable and writable; it is also easily parseable by computers, facilitating both analysis and artistic creation with the help of computers.
 2. **Treat all twelve notes as equal citizens**: tnote uses a single number to represent each of the twelve notes of the [octave](https://en.wikipedia.org/wiki/Equal_temperament). There is no concept of sharps or flats.
-3. **Use the graphical possibilities of the digital age**: the widespread availability of computers allows faithful reproduction of alternate graphical arrangements to express music. While tnote is textual, it uses colors and levels of scale to make the music more readable and memorable.
+3. **Use the graphical possibilities of the digital age**: the widespread availability of computers allows faithful reproduction of alternate graphical arrangements to express music. While tnote is textual, the tnote interface it uses colors and levels of scale to make the music more readable and memorable.
 4. **Use the interactive possibilities of the digital age**: a digital music notation allows for interactivity, which can be an aid to learning and memorizing. The tnote interface allows reproduction of individual notes, voices and entire pieces, to assist reading and to allow exploration.
 5. **Stimulate the exploration of novel approaches to notate music**: the standard musical notation is a refined, time-tested and indisputable tool for reading and writing music. This project considers, however, that the time is ripe to explore alternatives and improvements to it. tnote is a contribution to this latent potential.
 
 ## Using tnote
 
-tnote runs on any modern browser and requires no installation. You can find the latest version [here](https://fpereiro.github.io/tnote/tnote/tnote.html).
+The tnote interface runs on any modern browser and requires no installation. You can find the latest version [here](https://fpereiro.github.io/tnote/tnote/tnote.html).
 
 tnote uses Keith Horwood's amazing [audiosynth library](https://github.com/keithwhor/audiosynth) to generate synthetized piano sounds.
 
@@ -59,7 +59,7 @@ To be uploaded.
 
 ## The tnote file format
 
-tnote is designed to be easy to write and moderately readable, while being very compact. This is how a tnote file looks like:
+The tnote format is designed to be easy to write and moderately readable, while being very compact. This is how a tnote file looks like:
 
 ```
 author  Johann Sebastian Bach
@@ -161,4 +161,4 @@ I'm experimenting also with singing the digitation of each voice, which could be
 - `o` corresponds to the ring finger.
 - `u` corresponds to the little finger.
 
-To perform digital solfège, you singing the melody of the voice (using the right note values and durations) but using the vowel corresponding to the finger which plays the note. This is directly applicable to the piano or any instrument where each note is played with a determinate finger.
+To perform digital solfège, sing the melody of the voice (using the right note values and durations) but using the vowel corresponding to the finger which plays the note. This is directly applicable to the piano or any instrument where each note is played with a determinate finger.

@@ -1,7 +1,6 @@
 ## Todo
 
-- Add digitations to BVW 846.
-- Fix imperfect alignment (example: slight right on r1 on bar 2 of fugue I).
+- Fix imperfect alignment (example: bvw 846 fugue I, slight right on r1 on bar 2).
 
 ## Client Data/State structure
 

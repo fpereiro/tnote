@@ -508,10 +508,9 @@ Please refer to readme.md to read the annotated source (but not yet!).
    }
 
    Views.library = function () {
-      var SHA = '71ea50be3aebd857b25775bfcd89690a24125bdd';
       var listeners = [
          ['retrieve', 'library', function () {
-            c.ajax ('get', 'https://cdn.jsdelivr.net/gh/fpereiro/tnote@' + SHA + '/music/readme.md', {}, '', function (error, data) {
+            c.ajax ('get', 'https://raw.githubusercontent.com/fpereiro/tnote/master/music/readme.md', {}, '', function (error, data) {
                if (error) return alert ('There was an error accessing the library.');
                var pieces = [];
                dale.do (data.body.split ('\n'), function (voice) {
@@ -549,7 +548,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
          B.do ('rem', 'State', 'play');
       }}, function (x, library) {
          return ['div', {style: 'padding-left: 20px;'}, [
-            ['h2', ['Tnote Library (', ['a', {target: '_blank', href: 'https://github.com/fpereiro/tnote/tree/' + SHA + '/music/readme.md'}, 'link'], ')']],
+            ['h2', ['Tnote Library (', ['a', {target: '_blank', href: 'https://github.com/fpereiro/tnote/blob/master/music/readme.md'}, 'link'], ')']],
             dale.do (library, function (piece) {
                return [
                   ['span', B.ev ({class: 'action'}, ['onclick', 'load', 'piecelink', piece [1]]), piece [0]],
