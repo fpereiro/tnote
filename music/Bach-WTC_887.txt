@@ -1,6 +1,6 @@
 author  Johann Sebastian Bach
 title   The Well-Tempered Clavier - Book 2 - Prelude & Fugue XVIII - BVW 887
-version 20200212
+version 20200212 (incomplete)
 transcription Federico Pereiro <fpereiro@gmail.com>
 
 START SECTION

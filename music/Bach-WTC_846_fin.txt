@@ -1,6 +1,6 @@
 author  Johann Sebastian Bach
 title   The Well-Tempered Clavier - Book 1 - Prelude & Fugue I - BVW 846
-version 20200306, fingered
+version 20200306, fingered (incomplete)
 transcription Federico Pereiro <fpereiro@gmail.com>
 
 START SECTION
