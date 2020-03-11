@@ -18,6 +18,7 @@ State.play
 State.show
    fin: true|false (show/hide fingerings)
    oct: true|false (show/hide octave)
+   pit: true|false (show/hide pitch class)
    dur: true|false (show/hide duration)
    not: true|false (show/hide notes)
 

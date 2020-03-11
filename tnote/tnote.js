@@ -240,7 +240,7 @@ Please refer to readme.md to read the annotated source (but not yet!).
       }
 
       var printLabel = function (barNumber, voiceName) {
-         return ['li', {class: 'label', style: 'text-align: left'}, barNumber + ' : ' + voiceName];
+         return ['li', B.ev ({class: 'label', style: 'text-align: left'}, ['onclick', 'copy', 'line', {rawArgs: 'this'}]), barNumber + ' : ' + voiceName];
       }
 
       var printNote = function (note, voiceName) {
@@ -274,10 +274,12 @@ Please refer to readme.md to read the annotated source (but not yet!).
                return ['span', {style: 'font-weight: bold; color: ' + (colors [v] || 'black')}, v];
             })] : [],
             B.get ('State', 'show', 'oct') ? ['span', {class: 'octave', style: 'color: ' + cmap [note [0] || 0]}, note [0] || ''] : [],
-            ['span', {class: 'pitch', style: 'color: ' + (B.get ('State', 'show', 'oct') ? 'black' : cmap [note [0] || 0])}, nname],
+            B.get ('State', 'show', 'pit') ? ['span', {class: 'pitch', style: 'color: ' + (B.get ('State', 'show', 'oct') ? 'black' : cmap [note [0] || 0])}, nname] : [],
             B.get ('State', 'show', 'dur') ? ['span', {class: 'duration'}, note [3] ['textual-duration']] : [],
-            B.get ('State', 'show', 'not') ? ['span', {class: 'notes'}, notes] : [],
-            ['span', {class: 'ligature', style: 'color: red; font-weight: bold'}, note [3].ligature ? ' ‿' : ''],
+            B.get ('State', 'show', 'not') ? [
+               ['span', {class: 'notes'}, notes],
+               ['span', {class: 'ligature', style: 'color: red; font-weight: bold'}, note [3].ligature ? ' ‿' : ''],
+            ] : [],
          ]];
       }
 
@@ -474,7 +476,8 @@ Please refer to readme.md to read the annotated source (but not yet!).
                ['li.label, li.note', {
                   // li.pad should also have this property but adding it makes it take no width.
                   'list-style-type': 'none',
-                  'border-radius': 10
+                  'border-radius': 10,
+                  cursor: 'pointer'
                }],
                ['li.label', {
                   'font-size': FONTSIZE * 3/4, 'padding-top': FONTSIZE / 4,
@@ -611,11 +614,44 @@ Please refer to readme.md to read the annotated source (but not yet!).
          ['change', ['State', 'show'], function (x) {
             B.do (x, 'change', ['State', 'play', 'section']);
          }],
+         ['save', 'settings', function (x) {
+            var current = teishi.p (localStorage.getItem ('tnote'));
+            current = current || {};
+            current.show = B.get ('State', 'show');
+            localStorage.setItem ('tnote', teishi.s (current));
+         }],
+         ['load', 'settings', function (x) {
+            var current = teishi.p (localStorage.getItem ('tnote')) || {};
+            if (current.show) B.do (x, 'set', ['State', 'show'], current.show);
+         }],
+         ['copy', 'line', function (x, el) {
+            var html = el.parentElement.innerHTML;
+            html = html.replace (/onclick="[^"]+"/g, '').replace (/id="[^"]+"/g, '');
+            B.do ('copy', 'clipboard', '<ul class="line">' + html + '</ul>');
+         }],
+         ['copy', 'clipboard', function (x, string) {
+            // https://hackernoon.com/copying-text-to-clipboard-with-javascript-df4d4988697f
+            var el = document.createElement ('textarea');
+            el.value = string;
+            el.setAttribute ('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild (el);
+            var selected = document.getSelection ().rangeCount > 0 ? document.getSelection ().getRangeAt (0) : false;
+            el.select ();
+            document.execCommand ('copy');
+            document.body.removeChild (el);
+            if (selected) {
+               document.getSelection ().removeAllRanges ();
+               document.getSelection ().addRange (selected);
+            }
+         }],
       ];
       return [
          B.view (['State', 'play'], {attrs: {class: 'top'}, listen: listeners, ondraw: function () {
             if (! B.get ('State', 'play')) B.do ('make', 'play');
-            if (! B.get ('State', 'show')) B.do ('set', ['State', 'show'], {fin: true, oct: true, dur: true, not: true});
+            if (! B.get ('State', 'show')) B.do ('load', 'settings');
+            if (! B.get ('State', 'show')) B.do ('set', ['State', 'show'], {fin: true, oct: true, pit: true, dur: true, not: true});
          }}, function (x, play) {
             if (! play) return;
             return [
@@ -644,7 +680,10 @@ Please refer to readme.md to read the annotated source (but not yet!).
                   B.view (['State', 'show'], {tag: 'span'}, function (x, show) {
                      if (! show) return;
                      return dale.do (show, function (v, k) {
-                        return [['label', k], ['input', B.ev ({type: 'checkbox', checked: v}, ['onclick', 'set', ['State', 'show', k], ! v])]];
+                        return [['label', k], ['input', B.ev ({type: 'checkbox', checked: v}, [
+                           ['onclick', 'set', ['State', 'show', k], ! v],
+                           ['onclick', 'save', 'settings'],
+                        ])]];
                      })
                   }),
                ]],
