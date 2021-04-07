@@ -102,7 +102,7 @@ As for the `notes`, they are organized in `voices`. A `voice` lists all the note
 1 R2  0*3 41
 ```
 
-Notes are separated by spaces. Multiple spaces can be used to align the notes in a more readable way. Here's an example of an entire bar.
+Notes are separated by spaces. Multiple spaces can be used to align the notes in a more readable way. Here's an example of an entire bar in *unabridged notation*:
 
 ```
  4 R  0/2       4C9/2     4C9/2     52B/2     0/2       4C9/2     4C9/2     4B8/2
@@ -111,23 +111,38 @@ Notes are separated by spaces. Multiple spaces can be used to align the notes in
 
 As for the notes, this is how you write them:
 
-- To mark fingerings, you can use lowercase letters (`a-z`) preceding each note.
 - Start with the octave, which is a number between 1 and 7.
 - Immediately after, place the pitch class of the note, which is 1-9 or A, B or C. For example, C4 would be written 41; and G5 would be written 58; while B3 would be written 3C.
 - If the note is a rest, you write `0` and don't add an octave.
 - If the note is a chord, start writing the octave number of the first note. Then write the notes of the chord sorted from low to high. If between two contiguous notes on the chord there's a jump of more than an octave (for example: C4 to D5), put a + in the middle. For example, the chord C4+D5 would be written `41+3`. If the jump is of two octaves, you'd write `41++3` instead. In general, for a jump of n octaves, place n `+` signs.
-- Next goes the duration. If the duration is exactly one beat (a quarter note), nothing should be added. If the note is a fraction expressible as 1 / n (where n is an integer), you would place `/n` after the note. For example, for half a beat you would write `41/2`. For a quarter beat, `41/4`. For a third of a beat, `41/3`.
+- Next goes the duration. If the duration is exactly one beat (a quarter note), a `/1` should be added. If the note is a fraction expressible as 1 / n (where n is an integer), you would place `/n` after the note. For example, for half a beat you would write `41/2`. For a quarter beat, `41/4`. For a third of a beat, `41/3`.
 - If the note is a multiple of a beat, you'd write `41*2` (for twice a beat), `41*4` (for four times a beat), etc.
 - You can also multiply a note by a number. For example, for one and a half beats, you can write `41*1.5`.
 - You can also multiply by a fraction. For the same note as above, you can write `41*3/2`.
-- Finally, there are a few capital letters to indicate certain modifications to the note:
+- There are a few capital letters to indicate certain modifications to the note:
    - `L` indicates this note is [ligated](https://en.wikipedia.org/wiki/Ligature_(music)) to the next one.
    - `F` indicates a [fermata](https://en.wikipedia.org/wiki/Fermata).
    - `P` indicates an [appogiatura](https://en.wikipedia.org/wiki/Appoggiatura).
    - `M` indicates a [mordent](https://en.wikipedia.org/wiki/Mordent).
    - `T` indicates a [trill](https://en.wikipedia.org/wiki/Trill_(music)).
+- Regarding the spacing of notes, the tnote interface is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are:
+   1. Notes on the same bar that are on different voices and start at the same time should be horizontally aligned
+   2. If there's no overlap between two notes in different voices, then the note that starts later should be pushed to the right until its starting voice avoids overlap with the other note.
+   - In other words: *notes from different voices that are aligned start at the same time; and notes from different voices that overlap graphically must also overlap in sound.* For rule #1, the reverse is also true: if two notes start at the same time, they should be aligned; but for rule #2, it is possible for two notes that overlap in time to not overlap in space; however *the converse cannot be true*.
+- The notes in a tnote voice can be abridged in the following ways, either within a bar or in a longer section:
+   - If the previous note has the same octave, the octave can be omitted. The only exception is chords, which always must show the octave to make it clear that it is a chord.
+   - If the previous note has the same value (duration), the duration can be omitted.
+   - Abridged notation is the default, but it is entirely optional. It is important to understand that the abridged notation is designed to *not* generate any ambiguities.
+   - Besides being shorter, the abridged notation allows to see more clearly the changes in octave and duration between notes.
 
-tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are: 1) notes on the same bar that are on different voices and start at the same time should be horizontally aligned; and 2) if there's no overlap between two notes in different voices, then the note that starts later should be pushed to the right until its starting voice avoids overlap with the other note. In other words: *notes from different voices that are aligned start at the same time; and notes from different voices that overlap graphically must also overlap in sound.* For rule #1, the reverse is also true: if two notes start at the same time, they should be aligned; but for rule #2, it is possible for two notes that overlap in time to not overlap in space; however the converse cannot be true.
+```
+ 4 R  0/2     4C9   4C9   52B   0     4C9   4C9   4B8
+ 4 L  39/4 44 39 44 38 44 38 44 39 44 39 44 34 44 34 44
+ ```
+
+- Fingerings can be optionally added at the end of each bar, after a double pipe (`||`). They can also be pretty printed to give a clearer notion of how they combine together.
+- For representing fingerings, we use the standard of `1` for thumb, `2` for index finger, `3` for middle finger, `4` for ring finger and `5` for the pinky. If the finger is from the opposite hand (for example, if for a right hand voice the digitation is done by a finger from the left hand), an `x` is added in front of the digitation. Finally, for chords, the fingerings are grouped with parenthesis, to indicate they happen at the same time.
+- Note: the digitations shown in the list of available music are my own and should *not* be considered authoritative.
 
 ## Available music in tnote format
 
@@ -155,10 +170,10 @@ The entire dodecaphonic scale, in solfège, is then:
 
 I'm experimenting also with singing the digitation of each voice, which could be called **digital solfège**. I have chosen to use the five vowels to represent the five fingers. Since I'm a native Spanish speaker, I choose the [Spanish sounds](https://en.wikipedia.org/wiki/Help:IPA/Spanish) for the vowels (`aeiou` in IPA).
 
-- `a` corresponds to the thumb.
-- `e` corresponds to the index.
-- `i` corresponds to the middle finger.
-- `o` corresponds to the ring finger.
-- `u` corresponds to the little finger.
+- `a` corresponds to the thumb (`1`).
+- `e` corresponds to the index (`2`).
+- `i` corresponds to the middle finger (`3`).
+- `o` corresponds to the ring finger (`4`).
+- `u` corresponds to the little finger (`5`).
 
 To perform digital solfège, sing the melody of the voice (using the right note values and durations) but using the vowel corresponding to the finger which plays the note. This is directly applicable to the piano or any instrument where each note is played with a determinate finger.
