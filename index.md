@@ -138,7 +138,7 @@ The notes in a tnote voice can be abridged in the following ways, either within 
  ```
 
 - Fingerings can be optionally added at the top of each voice, in a line of their own, chained by dashes (`-`).
-- For representing fingerings, we use a left-to-right standard where `1` is the left pinky, `2` is the left ring finger, `3` is the left middle finger, `4` is the left index finger, `5` is the left thumb, `6` is the right thumb, `7` is the right index finger, `8` is the right middle finger, `9` is the right ring finger and `0` is the pinky.
+- For representing fingerings, we use a left-to-right standard where `1` is the left pinky, `2` is the left ring finger, `3` is the left middle finger, `4` is the left index finger, `5` is the left thumb, `6` is the right thumb, `7` is the right index finger, `8` is the right middle finger, `9` is the right ring finger and `0` is the right pinky.
 - Note: the digitations shown in the list of available music are my own and should *not* be considered authoritative.
 
 ```
