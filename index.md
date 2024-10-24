@@ -12,7 +12,7 @@ tnote is a textual musical notation. It is based on the following principles:
 
 ## Using tnote
 
-The tnote interface runs on any modern browser and requires no installation. You can find the latest version [here](https://fpereiro.github.io/tnote/tnote/tnote.html).
+The tnote interface runs on any modern browser and requires no installation. You can find the latest version [here](https://fpereiro.github.io/tnote/tnote/tnote.html). Note: the latest version of the interface uses an older tnote format. The authoritative version of the notation is the one contained here, not in the interface.
 
 tnote uses Keith Horwood's amazing [audiosynth library](https://github.com/keithwhor/audiosynth) to generate synthetized piano sounds.
 
@@ -38,24 +38,23 @@ To be uploaded.
    - The letter `A` (the number `10` in hexadecimal notation) represents `A`.
    - The letter `B` (the number `11` in hexadecimal notation) represents `A#` or `Bb`.
    - The letter `C` (the number `12` in hexadecimal notation) represents `B`.
+   - The stop is represented by the number `0`.
 
-   The stop is represented by the number `0`.
+3. The [octave](https://en.wikipedia.org/wiki/Octave) of the note is expressed as either a number or a color (or both):
 
-3. The octave of the note is expressed as either a number or a color (or both):
+   - The first octave is represented by either `o` or the color red.
+   - The second octave is represented by either `p` or the color orange.
+   - The third octave is represented by either `q` or the color yellow.
+   - The fourth octave is represented by either `r` or the color green.
+   - The fifth octave is represented by either `s` or the color blue.
+   - The sixth octave is represented by either `t` or the color indigo.
+   - The seventh octave is represented by either `u` or the color violet.
 
-   - The first octave is represented by either `1` or the color red.
-   - The second octave is represented by either `2` or the color orange.
-   - The third octave is represented by either `3` or the color yellow.
-   - The fourth octave is represented by either `4` or the color green.
-   - The fifth octave is represented by either `5` or the color blue.
-   - The sixth octave is represented by either `6` or the color indigo.
-   - The seventh octave is represented by either `7` or the color violet.
-
-   The octave starts at the pitch class 1 (C). For example, [A440](https://en.wikipedia.org/wiki/A440_(pitch_standard)) belongs to octave 4.
+   The octave starts at the pitch class 1 (C). For example, [A440](https://en.wikipedia.org/wiki/A440_(pitch_standard)) belongs to octave `r`.
 
 4. The [value](https://en.wikipedia.org/wiki/Note_value) (duration) of the note is expressed by either a fraction or a multiplier.
 
-5. Chords are expressed as a single note segment with the note numbers being written in succession, from the lowest to the highest. The octave color of the segment belongs to that of the *lower* note.
+5. Chords are expressed as a single note segment with the note numbers being written in succession, from the lowest to the highest. The octave of the segment belongs to that of the *lowest* note.
 
 ## The tnote file format
 
@@ -99,47 +98,53 @@ As for the `notes`, they are organized in `voices`. A `voice` lists all the note
 `NN` stands for the bar number. `NAME` is the name of the voice (for example, `R1` if it's the first voice of the right hand of a piano piece). Here's an example:
 
 ```
-1 R2  0ca 41d
+1 R2  0ca r1d
 ```
 
 Notes are separated by spaces. Multiple spaces can be used to align the notes in a more readable way. Here's an example of an entire bar in *unabridged notation*:
 
 ```
- 4 R  0b      4C9b    4C9b    52Bb    0b      4C9b    4C9b    4B8b
- 4 L  39d 44d 39d 44d 38d 44d 38d 44d 39d 44d 39d 44d 34d 44d 34d 44d
+ 4 R  0b      rC9b    rC9b    52Bb    0b      rC9b    rC9b    rB8b
+ 4 L  q9d r4d q9d r4d q8d r4d q8d r4d q9d r4d q9d r4d q4d r4d q4d r4d
 ```
 
 As for the notes, this is how you write them:
 
-- Start with the octave, which is a number between 1 and 7.
-- Immediately after, place the pitch class of the note, which is 1-9 or A, B or C. For example, C4 would be written 41; and G5 would be written 58; while B3 would be written 3C.
+- Start with the octave, which is a letter between `o` and `u`, with `o` corresponding to octave 1, `p` corresponding to octave 2, and so forth until `u`, which corresponds to octave 7.
+- Immediately after, place the pitch class of the note, which is 1-9 or A, B or C. For example, C4 would be written s1; and G5 would be written s8; while B3 would be written qC.
 - If the note is a rest, you write `0` and don't add an octave.
-- If the note is a chord, start writing the octave number of the first note. Then write the notes of the chord sorted from low to high. If between two contiguous notes on the chord there's a jump of more than an octave (for example: C4 to D5), put a + in the middle. For example, the chord C4+D5 would be written `41+3`. If the jump is of two octaves, you'd write `41++3` instead. In general, for a jump of n octaves, place n `+` signs.
+- If the note is a chord, start writing the octave number of the first note. Then write the notes of the chord sorted from low to high. If between two contiguous notes on the chord there's a jump of more than an octave (for example: C4 to D5), put a + in the middle. For example, the chord C4+D5 would be written `r1+3`. If the jump is of two octaves, you'd write `r1++3` instead. In general, for a jump of n octaves, place n `+` signs.
 - Next goes the value (duration). The base unit is the beat (quarter note). Durations are expressed with lowercase letters, where `a` represents `1`, `b` represents `2`, etc. If only one number is added, that's understood as a *divisor*: for example, `a` means *beat divided by one*, which is equivalent to a beat (quarter note); `b` means *beat divided by two*, which is equivalent to an eight note. `c` conveys an eight note. To convey a half note (two beats), use `ba` which means two divided by one. To convey a note with a value of 3/4, use `cd`.
 - There are a few symbols to indicate certain modifications to the note:
-   - `.` indicates this note is [ligated](https://en.wikipedia.org/wiki/Ligature_(music)) to the next one.
+   - `_` indicates this note is [ligated](https://en.wikipedia.org/wiki/Ligature_(music)) to the next one. When a note is ligated over bars, a dot can be added to the beginning of the note of the second bar.
    - `^` indicates a [fermata](https://en.wikipedia.org/wiki/Fermata).
    - `*` indicates an [appogiatura](https://en.wikipedia.org/wiki/Appoggiatura).
    - `~` indicates a [mordent](https://en.wikipedia.org/wiki/Mordent).
    - `!` indicates a [trill](https://en.wikipedia.org/wiki/Trill_(music)).
-- Regarding the spacing of notes, the tnote interface is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are:
+- Regarding the spacing of notes, tnote is oblivious to multiple spaces. However, I employ two rules to [pretty print](https://en.wikipedia.org/wiki/Prettyprint) its content. The two rules are:
    1. Notes on the same bar that are on different voices and start at the same time should be horizontally aligned
    2. If there's no overlap between two notes in different voices, then the note that starts later should be pushed to the right until its starting voice avoids overlap with the other note.
    - In other words: *notes from different voices that are aligned start at the same time; and notes from different voices that overlap graphically must also overlap in sound.* For rule #1, the reverse is also true: if two notes start at the same time, they should be aligned; but for rule #2, it is possible for two notes that overlap in time to not overlap in space; however *the converse cannot be true*.
-- The notes in a tnote voice can be abridged in the following ways, either within a bar or in a longer section:
-   - If the previous note has the same octave, the octave can be omitted. The only exception is chords, which always must show the octave to make it clear that it is a chord.
+
+The notes in a tnote voice can be abridged in the following ways, either within a bar or in a longer section:
+   - If the previous note has the same octave, the octave can be omitted.
    - If the previous note has the same value (duration), the duration can be omitted.
    - Abridged notation is the default, but it is entirely optional. It is important to understand that the abridged notation is designed to *not* generate any ambiguities.
    - Besides being shorter, the abridged notation allows to see more clearly the changes in octave and duration between notes.
 
 ```
- 4 R  0b     4C9   4C9   52B   0     4C9   4C9   4B8
- 4 L  39d 44 39 44 38 44 38 44 39 44 39 44 34 44 34 44
+ 4 R  0b     rC9   rC9   52B   0     rC9   rC9   rB8
+ 4 L  q9d r4 q9 r4 q8 r4 q8 r4 q9 r4 q9 r4 q4 r4 q4 r4
  ```
 
-- Fingerings can be optionally added at the end of each bar, after a double pipe (`||`). They can also be pretty printed to give a clearer notion of how they combine together.
-- For representing fingerings, we use the standard of `1` for thumb, `2` for index finger, `3` for middle finger, `4` for ring finger and `5` for the pinky of the right hand. For the left hand, the digits 6-0 are employed (6 for the thumb, 7 for the index, etc)
+- Fingerings can be optionally added at the top of each voice, in a line of their own, chained by dashes (`-`).
+- For representing fingerings, we use a left-to-right standard where `1` is the left pinky, `2` is the left ring finger, `3` is the left middle finger, `4` is the left index finger, `5` is the left thumb, `6` is the right thumb, `7` is the right index finger, `8` is the right middle finger, `9` is the right ring finger and `0` is the pinky.
 - Note: the digitations shown in the list of available music are my own and should *not* be considered authoritative.
+
+```
+       7---6-7-8-9--6--7--8-9-6-7-8----9---1
+ 4 R1  rCd 8 A C s1 rC s1 3 5 3 5 7    8b  rC
+```
 
 ## Available music in tnote format
 
@@ -167,15 +172,15 @@ The entire dodecaphonic scale, in solfège, is then:
 
 I'm experimenting also with singing the digitation of each voice, which could be called **digital solfège**. By being able to pronounce the digitations, my hope is that they will be easier to memorize and retain. I have chosen to use the five vowels to represent the five fingers. Since I'm a native Spanish speaker, I choose the [Spanish sounds](https://en.wikipedia.org/wiki/Help:IPA/Spanish) for the vowels (`aeiou` in IPA). Each vowel is prepended by a consonant that is quite distinct in sound from the others; I took these consonants from the [Major System](https://en.wikipedia.org/wiki/Mnemonic_major_system). As a result, each of the ten fingers is associated with a syllable that is easy to pronounce and distinct from the others.
 
-- `ta` corresponds to the right thumb (`1`).
-- `ne` corresponds to the right index (`2`).
-- `mi` corresponds to the right middle finger (`3`).
-- `ro` corresponds to the right ring finger (`4`).
-- `lu` corresponds to the right pinky (`5`).
-- `sha` corresponds to the left thumb (`6`).
-- `ke` corresponds to the left index (`7`).
-- `fi` corresponds to the left middle finger (`8`).
-- `po` corresponds to the left ring finger (`9`).
-- `su` corresponds to the left pinky (`0`).
+- `ta` corresponds to the left pinky (`1`).
+- `ne` corresponds to the left ring finger (`2`).
+- `mi` corresponds to the left middle finger (`3`).
+- `ro` corresponds to the left index finger (`4`).
+- `lu` corresponds to the left thumb (`5`).
+- `sha` corresponds to the right thumb (`6`).
+- `ke` corresponds to the right index (`7`).
+- `fi` corresponds to the right middle finger (`8`).
+- `po` corresponds to the right ring finger (`9`).
+- `su` corresponds to the right pinky (`0`).
 
 To perform digital solfège, sing the melody of the voice (using the original note pitches and durations) but singing the sound corresponding to the finger which plays the note. This is directly applicable to the piano or any instrument where each note is played with one finger.
