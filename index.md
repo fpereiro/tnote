@@ -155,7 +155,7 @@ The notes in a tnote voice can be abridged in the following ways, either within 
  4 R1  rCd 8 A C s1 rC s1 3 5 3 5 7    8b  rC
 ```
 
-- These consonants are taken from the [Major System](https://en.wikipedia.org/wiki/Mnemonic_major_system). As a result, each of the ten fingers is associated with a distinct consonant sound (see the section below on dodecaphonic solfège). They are also quite distinct symbols (though with some overlap) from the ones used to denote pitch class, octave and value.
+- These consonants are taken from the [Major System](https://en.wikipedia.org/wiki/Mnemonic_major_system). As a result, each of the ten fingers is associated with a distinct consonant sound (see the section below on digital solfège). They are also quite distinct symbols (though with some overlap) from the ones used to denote pitch class, octave and value.
 
 - Note: the digitations shown in the list of available music are my own and should *not* be considered authoritative.
 
