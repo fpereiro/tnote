@@ -137,14 +137,27 @@ The notes in a tnote voice can be abridged in the following ways, either within 
  4 L  q9d r4 q9 r4 q8 r4 q8 r4 q9 r4 q9 r4 q4 r4 q4 r4
  ```
 
-- Fingerings can be optionally added at the top of each voice, in a line of their own, chained by dashes (`-`).
-- For representing fingerings, we use a left-to-right standard where `1` is the left pinky, `2` is the left ring finger, `3` is the left middle finger, `4` is the left index finger, `5` is the left thumb, `6` is the right thumb, `7` is the right index finger, `8` is the right middle finger, `9` is the right ring finger and `0` is the right pinky.
-- Note: the digitations shown in the list of available music are my own and should *not* be considered authoritative.
+- Fingerings can be optionally added at the top of each voice, in a line of their own.
+- For representing fingerings, we use the following symbols:
+   - `t` corresponds to the left pinky.
+   - `n` corresponds to the left ring finger.
+   - `m` corresponds to the left middle finger.
+   - `r` corresponds to the left index finger.
+   - `l` corresponds to the left thumb.
+   - `h` corresponds to the right thumb.
+   - `k` corresponds to the right index.
+   - `f` corresponds to the right middle finger.
+   - `p` corresponds to the right ring finger.
+   - `s` corresponds to the right pinky.
 
 ```
-       7---6-7-8-9--6--7--8-9-6-7-8----9---1
+       k   h k f p  h  k  f p h k f    p   h
  4 R1  rCd 8 A C s1 rC s1 3 5 3 5 7    8b  rC
 ```
+
+- These consonants are taken from the [Major System](https://en.wikipedia.org/wiki/Mnemonic_major_system). As a result, each of the ten fingers is associated with a distinct consonant sound (see the section below on dodecaphonic solfège). They are also quite distinct symbols (though with some overlap) from the ones used to denote pitch class, octave and value.
+
+- Note: the digitations shown in the list of available music are my own and should *not* be considered authoritative.
 
 ## Available music in tnote format
 
@@ -172,15 +185,15 @@ The entire dodecaphonic scale, in solfège, is then:
 
 I'm experimenting also with singing the digitation of each voice, which could be called **digital solfège**. By being able to pronounce the digitations, my hope is that they will be easier to memorize and retain. I have chosen to use the five vowels to represent the five fingers. Since I'm a native Spanish speaker, I choose the [Spanish sounds](https://en.wikipedia.org/wiki/Help:IPA/Spanish) for the vowels (`aeiou` in IPA). Each vowel is prepended by a consonant that is quite distinct in sound from the others; I took these consonants from the [Major System](https://en.wikipedia.org/wiki/Mnemonic_major_system). As a result, each of the ten fingers is associated with a syllable that is easy to pronounce and distinct from the others.
 
-- `ta` corresponds to the left pinky (`1`).
-- `ne` corresponds to the left ring finger (`2`).
-- `mi` corresponds to the left middle finger (`3`).
-- `ro` corresponds to the left index finger (`4`).
-- `lu` corresponds to the left thumb (`5`).
-- `sha` corresponds to the right thumb (`6`).
-- `ke` corresponds to the right index (`7`).
-- `fi` corresponds to the right middle finger (`8`).
-- `po` corresponds to the right ring finger (`9`).
-- `su` corresponds to the right pinky (`0`).
+- `ta` corresponds to the left pinky.
+- `ne` corresponds to the left ring finger.
+- `mi` corresponds to the left middle finger.
+- `ro` corresponds to the left index finger.
+- `lu` corresponds to the left thumb.
+- `sha` corresponds to the right thumb.
+- `ke` corresponds to the right index.
+- `fi` corresponds to the right middle finger.
+- `po` corresponds to the right ring finger.
+- `su` corresponds to the right pinky.
 
 To perform digital solfège, sing the melody of the voice (using the original note pitches and durations) but singing the sound corresponding to the finger which plays the note. This is directly applicable to the piano or any instrument where each note is played with one finger.

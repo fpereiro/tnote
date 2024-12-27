@@ -1,0 +1,26 @@
+author         Wolfgang Amadeus Mozart
+title          Quartet No. 19 - Disonante - K.465
+version        20241026
+transcription  Federico Pereiro <fpereiro@gmail.com>
+
+section_title  Adagio
+bpm            55
+bpb            3
+
+ 1 V1 0ca              2 V1 0a    sAba
+ 1 V2 0ca              2 V2 r4ba      3a
+ 1 Vl 0ba       q9a    2 Vl q9a   8   7
+ 1 C  q1b 1 1 1 1 1    2 C  q1b 1 1 1 1 1
+
+ 3 V1
+ 3 V2
+ 3 Vl
+ 3 C  pCb C C C C C
+
+
+
+
+ 3 V1
+ 3 V2
+ 3 Vl
+ 3 C
