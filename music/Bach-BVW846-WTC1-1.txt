@@ -1,5 +1,5 @@
 author         Johann Sebastian Bach
-title          The Well Tempered Clavier   Book 1   Prelude & Fugue I   BVW 846
+title          The Well Tempered Clavier - Book 1 - Prelude & Fugue I - BVW 846
 version        20241025
 transcription  Federico Pereiro <fpereiro@gmail.com>
 
@@ -363,7 +363,7 @@ bpb            4
 
        k   p     s p f f  ps     hkf  p
 15 R1  r3b 8_ 8d A 8 6 5b 58     37A  C
-       m   f  p    k      h           k
+       h   f  h    k      h           k
 15 R2  qCb r5 qA   r3_ 3  q8     0    r8_
            t  n    m   r    l  r m    l
 15 L2  0b  p8 A    C   q1cd 3h 1 pCb  q5

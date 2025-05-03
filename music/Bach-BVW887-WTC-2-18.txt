@@ -1,0 +1,150 @@
+author         Johann Sebastian Bach
+title          The Well-Tempered Clavier - Book 2 - Prelude & Fugue XVIII - BVW 887
+version        20250317 (incomplete)
+transcription  Federico Pereiro <fpereiro@gmail.com>
+
+section_title  Prelude XVIII
+bpm            120
+bpb            4
+
+ 1 R1  r9d B C s2 4 rC B 9 8 9 B 5 4  0  0b
+ 1 R2  0da
+ 1 L1  q9C4       0        q9B2    0d r2 pC B
+
+ 2 R1  0b     r9C   9C    B2    0     r9C   9C    8B
+ 2 L1  q9d r4 q9 r4 q8 r4 q8 r4 q9 r4 q9 r4 q4 r4 q4 r4
+
+ 3 R1  r9d B C s2 4 rC B 9 8 9 B 5 4  0  0b
+ 3 L1  q9C4       0        q9B2    0d r2 qC B
+
+ 4 R1  0b     rC9   rC9   s2B   0b    rC9   C9    B8
+ 4 L1  q9d r4 q9 r4 q8 r4 q8 r4 q9 r4 q9 r4 q4 r4 q4 r4
+
+ 5 R1  0b     r9Cd 8B 9Cb   C9    0     r9C   0     rBd 9
+ 5 R2  0gb                                          r6b
+ 5 L1  q9d r4 q9   r4 q7 r4 q7 r4 q6 r2 q6 r2 q2 r2 q2  r2
+
+ 6 R1  0b     r7Bd 69 7Bb   B7    0    r7B  0     r9d 7
+ 6 R2  0gb                                        r4b
+ 6 L1  q7d r2 q7   r2 q6 r2 q6 r2 q4 C q4 C pC qC pC  qC
+
+ 7 R1  0b    r39d 47 69b   96  0   r69 0     r7d 6
+ 7 R2  0gb                                   r3b
+ 7 L1  q6d C 6    C  4   C 4 C 3 B 3 B pB qB pB  qB
+
+ 8 R1  r47       0d rBd 9 7 6 4 6 9 8 6 8 B
+ 8 L1  q4d 7 9 B Cb     4   3   C   B   2
+
+ 9 L1  rBb   9   0d r7d 5 4 2 1 2 5 4 2 4 7
+ 9 L1  q1d 4 6 8 9b     pCb B   q8  7   pA
+
+10 R1  r7b    5   0d r4 2 qC B 9 B r2 1 qB r1 4
+10 L1  p9d q1 2 4 5b    p9   8   q5   4    p7
+
+11 R1  q9d 8 9 C B 9 B r2 q8 r5 4 2 B 2 B 2
+11 L1  p6d   q3  2   p5   4     6   8   4
+
+12 R1  r1d A 9 7 s4 r7 s4 r7 6 3 2 qC r9 qC r9 qC
+12 L1  p9b   B   q1    p9    q2  4    6     2
+
+13 R1  qBd r8 7 5 s2 r5 s2 r5 4 7 9 B C 7 6 4
+13 L1  q7b    9   B     7     C   B   9   7
+
+14 R1  r3d C B 9 s6 r9 s6 r9 7 B s4 6 7 4 1 4
+14 L1  q6b   9   3     pB    q4  2    1   pB
+
+15 R1  rAd s7 6 4 t1 s4 t1 s4 3 4 6 B rB 0   0b
+15 L1  q1b    4   pA    6     B   0   0d r9d 7  6
+
+16 R1  0d  s3d 4 6 7h 6 4d 9Cb 9C   3B    0
+16 L1  r4d 6   7 9 B    7  6 4 3  4 6  qC B 9 7 6
+
+17 R1  0b    s47d   47b 69  0   47  47    36
+17 L1  q4d B 4    B 3 B 3 B 4 B 4 B pB q9 pB q9
+
+18 R1  0b     s4    4p 3 4 3 4 3 4 3 4     0     s4    2  rC s2 sB
+18 L1  pCd q7 pC q7 pB       q7      pB q7 pC q7 pC q7 p8 q5 p8 q5
+
+19 R1  rCb    0b    s2b              0b    rC    0        rB    0
+19 R2  0b     r4b   4p 3 4 3 4 3 4 3 4b    0     r5h 4 3  4b    s4
+19 L1  p9d q4 p9 q4 p8       q4      p8 q4 p9 q4 p9    q4 p7 q4 p7 q4
+
+20 R1  0b     s6d 4 6   9   3     6   rB
+20 R2  r9ba                 9cd     7 6 4 6  3
+20 L1  p6d q4 3   1 2 9 6 9 pB qB 1 B 2 B pB q5
+
+21 R1  rBb   Bd 9 Bb  s7  0   s4  0     s1
+21 R2  r4b   7d 6 7b  B   0   r7  0     r6d 4
+21 L1  q4d 7 4  7 2 B 2 B 1 9 1 9 p9 q9 p9  q7
+
+22 R1  0b    r9d 7 9   s6  0     s2    0     rB
+22 R2  0b    r6d 4 6b  9   0     r6    0     4  3
+22 L1  q2d 6 2   6 1 9 1 9 pB q7 pB q7 p7 q7 p7 q6
+
+23 R1  0b    rAb    C     s4    0     s4     1     C
+23 R2  0b    r7d 6  7  4  s1    0b    s1d rB s1 r9 s9b
+23 L1  q1d 4 1   r3 pB q7 pB q7 pA q6 pA  q6 p6 q6 p6 q4
+
+24 R1  sB             0d sB 5 9 9b 8     0a
+24 R2  s9b    7h 6 4d 3a        3        0
+24 L1  q3d pB q4   q7 Bb    pB  4cb 8h B q4a
+
+25 R1  s4d 6 8   9 B 5 4 2 1 2 4 rA 9 7 5 4
+25 L1  0b    q4d 6 8b  B   r4  2    1   q9
+
+26 R1  r5d s2 r5 s2 r6 s3 r6 s3 2 rA 9 7 6 s4 2 rC
+26 L1  r2b    q2    pC    qC    A    pA  9    q9
+
+27 R1  rBd C s2 4 5 rC A 9 8 9 B 5 4 2 qC B
+27 L1  q7b   p7   q2   5   pB  q2  p8  q4
+
+28 R1  qCd r9 qC r9 1 A 1 A 9 5 4 2 1 A 9 7
+28 L1  q9b    p9    7   q7  5   p5  4   q4
+
+29 R1  r6d 7 9 B C  s3 2 rC B C s2 r9 7  5  4 2
+29 L1  q2b   p2  0d r2 4 6  7b  q7    0d q7 9 B
+
+30 R1  r4d 5 7 9 A  s2 rC A 9 A C 7 5  3  2 qC
+30 L1  qCb   pC  0d pC q2 4 5b  p5  0d p5 7 9
+
+31 R1  q2b    2A    2A    3C    0     q2A   pC9
+31 L1  pAd q5 pA q5 p9 q5 p9 q5 pA q5 pA q5 p6 q3 p6 q3
+
+32 R1  0b     qA7d C9 r2Ab  r92   0    r85  94  B2
+32 L1  p7d q2 p7   q2 p5 q2 p5 q2 p4 8 B q2 C B 9 7
+
+33 R1  0b     r9Cd 8B 9Cb   B4    0    rA7  B6  s14
+33 L1  p9d q4 p9   q4 p7 q4 p7 q4 p6 A q1 4 2 1 pB 9
+
+34 R1  r63d C B 9 s6 r9 s6 r9 8 s5 4 2 B 2 B 2
+34 L1  pBb    q1  3     pB    q4   6   8   4
+
+35 R1  s1d rA 9 7 s4 p7 s4 p7 6 s3 2 pC s9 pC s9 pC
+35 L1  q9b    B   r1    q9    r2   4    6     2
+
+36 R1  rBd s2 4 6 7b     rB  9    s7   6   r9
+36 L1  r7         0d r7d 4 2 1 qB r1 4 2 1 2 4
+
+37 R1  r7d B s1 2 4b    r7   6   s3  2   5
+37 L1  r5b   4    0d r2 qC B 9 7 9 C B 9 B r2
+
+38 R1  r4d 7 9 B Cb    4   2   C   B   2
+38 L1  r2b   C   0d qB 9 7 6 4 6 9 7 6 7 B
+
+39 R1  r1b   A   9   qC  B   r9  7   qA
+39 L1  q4d 2 4 7 5 4 5 9 2 1 2 6 4 2 4 7
+
+40 R1  q9b    r7   6   q95 95   74    0a
+40 L1  q1d pB q1 4 2 1 2 5 p9 C q2 pC q2 7 9 2
+
+41 R1  r9d B C s2 4 rC B 9 7 9 B 5 4  0  0b
+41 L1  pCd B 9 B  C q2 4 5 5b  q7  0d r2 qC B
+
+42 R1  0b     rC9   C9    s2B   0     rC9   C9    B7
+42 L1  q9d r4 q9 r4 q7 r4 q7 r4 q9 r4 q9 r4 q4 r4 q4 r4
+
+line 1 of last page is 36-38
+
+do re fa sol la
+
+END SECTION
